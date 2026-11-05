@@ -34,7 +34,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Hide scrollbar for clean mobile look */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -59,8 +58,8 @@
                         <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">PRO</span>
                     </h1>
                     <p id="syncStatusText" class="text-[11px] text-slate-400 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" id="syncDot"></span>
-                        <span>Menyiapkan penyimpanan...</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400" id="syncDot"></span>
+                        <span>Tersimpan di Perangkat (Local Storage)</span>
                     </p>
                 </div>
             </div>
@@ -130,7 +129,6 @@
 
                 <!-- Macros Grid -->
                 <div class="grid grid-cols-3 gap-2.5 pt-2">
-                    <!-- Protein -->
                     <div class="glass-card-light p-3 rounded-2xl">
                         <div class="flex justify-between items-center text-xs mb-1">
                             <span class="font-bold text-blue-400">Protein</span>
@@ -140,7 +138,6 @@
                             <div id="proBar" class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
-                    <!-- Carbs -->
                     <div class="glass-card-light p-3 rounded-2xl">
                         <div class="flex justify-between items-center text-xs mb-1">
                             <span class="font-bold text-amber-400">Karbo</span>
@@ -150,7 +147,6 @@
                             <div id="carbBar" class="h-full bg-amber-500 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
-                    <!-- Fats -->
                     <div class="glass-card-light p-3 rounded-2xl">
                         <div class="flex justify-between items-center text-xs mb-1">
                             <span class="font-bold text-rose-400">Lemak</span>
@@ -174,7 +170,6 @@
                         </p>
                     </div>
                 </div>
-                <!-- Surplus Burn Options (Only visible if over target calories) -->
                 <div id="surplusBurnBox" class="hidden pt-2 mt-2 border-t border-slate-700/80 space-y-2">
                     <p class="text-xs font-semibold text-amber-300">⚡ Cara Bakar Kelebihan <span id="surplusKcalText">0</span> kkal Hari Ini Saja (Pilih Salah Satu):</p>
                     <div class="grid grid-cols-3 gap-2 text-center">
@@ -213,9 +208,7 @@
                     </button>
                 </div>
 
-                <div id="dashboardMealList" class="space-y-2.5">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="dashboardMealList" class="space-y-2.5"></div>
             </div>
 
         </section>
@@ -269,7 +262,6 @@
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">2. Detail Isi Piring (Biar Makin Akurat)</label>
                     <textarea id="descriptionInput" rows="3" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-500 text-xs text-white placeholder-slate-500 resize-none" placeholder="Contoh: Nasi putih 1 centong + dada ayam bakar 1 potong + telur rebus 1 butir + tumis sayur kangkung..."></textarea>
-                    <!-- Quick Chips -->
                     <div class="flex flex-wrap gap-1.5 mt-2">
                         <button type="button" onclick="appendChip('Nasi putih 1 centong')" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded-lg border border-slate-700">+ Nasi 1 centong</button>
                         <button type="button" onclick="appendChip('Dada ayam 100g')" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded-lg border border-slate-700">+ Dada ayam</button>
@@ -297,7 +289,6 @@
                     </span>
                 </div>
 
-                <!-- 4 Macros Box -->
                 <div class="grid grid-cols-4 gap-2 text-center">
                     <div class="bg-orange-500/10 border border-orange-500/20 p-2.5 rounded-2xl">
                         <p class="text-[10px] font-bold text-orange-400 uppercase">Kalori</p>
@@ -321,21 +312,16 @@
                     </div>
                 </div>
 
-                <!-- Per-Item Breakdown -->
                 <div class="space-y-2">
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-400">📋 Rincian Isi Piring:</p>
-                    <div id="resItemsList" class="space-y-1.5">
-                        <!-- Populated via JS -->
-                    </div>
+                    <div id="resItemsList" class="space-y-1.5"></div>
                 </div>
 
-                <!-- Summary Note -->
                 <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
                     <p class="text-[11px] font-bold text-emerald-400 uppercase mb-1">💡 Catatan Gizi & Tips Defisit:</p>
                     <p id="resSummary" class="text-xs text-slate-300 leading-relaxed"></p>
                 </div>
 
-                <!-- Save to Daily Log Button -->
                 <button onclick="saveScannedMealToLog()" class="w-full py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm shadow-lg shadow-emerald-500/25 transition flex items-center justify-center gap-2">
                     <span>💾 Simpan ke Log Kalori Harian</span>
                 </button>
@@ -344,8 +330,6 @@
 
         <!-- ================= TAB 3: RIWAYAT & GRAFIK 7 HARI ================= -->
         <section id="tab-history" class="hidden space-y-4">
-            
-            <!-- 7-Day Consistency Chart -->
             <div class="glass-panel rounded-3xl p-5 space-y-4">
                 <div class="flex items-center justify-between">
                     <div>
@@ -357,10 +341,7 @@
                     </span>
                 </div>
 
-                <!-- Bar Chart Container -->
-                <div id="weeklyChartContainer" class="grid grid-cols-7 gap-2 items-end h-36 pt-6 px-1 border-b border-slate-800 pb-2">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="weeklyChartContainer" class="grid grid-cols-7 gap-2 items-end h-36 pt-6 px-1 border-b border-slate-800 pb-2"></div>
 
                 <div class="grid grid-cols-2 gap-2.5 text-center">
                     <div class="glass-card-light p-3 rounded-2xl">
@@ -374,14 +355,12 @@
                 </div>
             </div>
 
-            <!-- Date Explorer -->
             <div class="glass-panel rounded-3xl p-5 space-y-4">
                 <div class="flex items-center justify-between gap-2">
                     <h3 class="text-sm font-bold text-white">📅 Cek Tanggal Tertentu</h3>
                     <input type="date" id="historyDatePicker" onchange="onHistoryDateChange(this.value)" class="px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-emerald-500">
                 </div>
 
-                <!-- Summary for Selected History Date -->
                 <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
                     <div>
                         <p id="histDateTitle" class="text-xs font-bold text-slate-300">Hari Ini</p>
@@ -392,15 +371,10 @@
                             Protein: <strong id="histTotalPro" class="text-blue-400">0g</strong> • Karbo: <strong id="histTotalCarb" class="text-amber-400">0g</strong> • Lemak: <strong id="histTotalFat" class="text-rose-400">0g</strong>
                         </p>
                     </div>
-                    <div id="histStatusBadge" class="text-right">
-                        <!-- Badge -->
-                    </div>
+                    <div id="histStatusBadge" class="text-right"></div>
                 </div>
 
-                <!-- List of Meals on that Date -->
-                <div id="historyMealList" class="space-y-2.5">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="historyMealList" class="space-y-2.5"></div>
             </div>
         </section>
 
@@ -454,7 +428,6 @@
                     </select>
                 </div>
 
-                <!-- Calculated BMR & TDEE Preview Box -->
                 <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 grid grid-cols-3 gap-2 text-center">
                     <div>
                         <p class="text-[10px] font-bold text-slate-400 uppercase">BMR (Tidur/Diam)</p>
@@ -502,7 +475,7 @@
 
     </main>
 
-    <!-- ================= BOTTOM NAVIGATION BAR (MOBILE-FIRST) ================= -->
+    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
     <nav class="fixed bottom-0 inset-x-0 z-30 glass-panel border-t border-slate-800 px-2 py-2">
         <div class="max-w-lg mx-auto grid grid-cols-4 gap-1">
             <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-emerald-400 bg-emerald-500/10 font-bold transition">
@@ -561,7 +534,7 @@
         </div>
     </div>
 
-    <!-- ================= MODAL 3: PENGATURAN GEMINI API KEY ================= -->
+    <!-- ================= MODAL 2: PENGATURAN GEMINI API KEY ================= -->
     <div id="apiModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-panel rounded-3xl max-w-md w-full p-5 space-y-4 border border-slate-700">
             <div class="flex items-center justify-between">
@@ -569,9 +542,9 @@
                 <button onclick="closeModal('apiModal')" class="text-slate-400 hover:text-white text-lg">✕</button>
             </div>
             <p class="text-xs text-slate-300 leading-relaxed">
-                Di dalam preview saat ini, AI langsung aktif otomatis. Namun jika u meng-upload web ini ke hosting gratis sendiri (seperti GitHub Pages / Netlify), masukkan <strong>Gemini API Key</strong> gratis dari <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-emerald-400 underline">Google AI Studio</a> di bawah ini:
+                Masukkan <strong>Gemini API Key</strong> gratis dari <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-emerald-400 underline">Google AI Studio</a>. Key ini disimpan permanen di memori browser HP u:
             </p>
-            <input type="password" id="customApiKeyInput" placeholder="AIzaSy... (Kosongkan jika pakai di Canvas)" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500">
+            <input type="password" id="customApiKeyInput" placeholder="AIzaSy..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500">
             <div class="flex gap-2">
                 <button onclick="saveCustomApiKey()" class="flex-1 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">
                     Simpan API Key
@@ -583,20 +556,15 @@
         </div>
     </div>
 
-    <!-- ================= FIREBASE & APPLICATION SCRIPT ================= -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <!-- ================= APPLICATION SCRIPT (LOCALSTORAGE PERSISTENCE) ================= -->
+    <script>
+        const STORAGE_KEYS = {
+            PROFILE: 'nutrisnap_profile_v1',
+            API_KEY: 'nutrisnap_apikey_v1',
+            MEALS: 'nutrisnap_meals_v1'
+        };
 
-        // --- Global State (In-Memory + Cloud Firestore Synced) ---
-        const apiKey = ""; // Canvas environment auto-injects when empty string
         let userCustomApiKey = "";
-        let currentUser = null;
-        let db = null;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nutrisnap-ai-app';
-
-        // Default Profile & Calculated Targets
         let userProfile = {
             gender: 'male',
             age: 25,
@@ -612,15 +580,50 @@
             targetFats: 50
         };
 
-        // All logged meals: Array of { id, date: 'YYYY-MM-DD', mealType, title, calories, protein, carbs, fats, items: [], timestamp }
         let allMealLogs = [];
         let selectedDashboardDate = getTodayStr();
         let selectedHistoryDate = getTodayStr();
 
-        // Temporary holder for latest AI scan result before saving
         let currentImageBase64 = null;
         let currentImageMimeType = null;
         let lastScannedResult = null;
+
+        // --- Load & Save LocalStorage ---
+        function loadFromLocalStorage() {
+            try {
+                const savedProfile = localStorage.getItem(STORAGE_KEYS.PROFILE);
+                if (savedProfile) {
+                    userProfile = { ...userProfile, ...JSON.parse(savedProfile) };
+                    document.getElementById('profGender').value = userProfile.gender || 'male';
+                    document.getElementById('profAge').value = userProfile.age || 25;
+                    document.getElementById('profWeight').value = userProfile.weight || 70;
+                    document.getElementById('profHeight').value = userProfile.height || 170;
+                    document.getElementById('profActivity').value = String(userProfile.activity || 1.375);
+                    document.getElementById('profDeficit').value = String(userProfile.deficitGoal ?? -500);
+                }
+
+                const savedKey = localStorage.getItem(STORAGE_KEYS.API_KEY);
+                if (savedKey) {
+                    userCustomApiKey = savedKey;
+                    document.getElementById('customApiKeyInput').value = userCustomApiKey;
+                }
+
+                const savedMeals = localStorage.getItem(STORAGE_KEYS.MEALS);
+                if (savedMeals) {
+                    allMealLogs = JSON.parse(savedMeals);
+                }
+            } catch (e) {
+                console.error("Gagal memuat localStorage:", e);
+            }
+        }
+
+        function saveMealsToLocalStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEYS.MEALS, JSON.stringify(allMealLogs));
+            } catch (e) {
+                console.error("Gagal menyimpan log makanan:", e);
+            }
+        }
 
         // --- Date Helper Functions ---
         function getTodayStr() {
@@ -662,7 +665,6 @@
             document.getElementById('toastBox').classList.add('hidden');
         };
 
-        // --- Modals & Navigation ---
         window.openModal = function(id) {
             const el = document.getElementById(id);
             el.classList.remove('hidden');
@@ -695,7 +697,6 @@
 
         // --- BMR & TDEE Calculation Logic ---
         function computeBmrAndTdee(profile) {
-            // Mifflin-St Jeor Equation
             let bmr = (10 * profile.weight) + (6.25 * profile.height) - (5 * profile.age);
             bmr += (profile.gender === 'male') ? 5 : -161;
             bmr = Math.round(bmr);
@@ -703,7 +704,6 @@
             const tdee = Math.round(bmr * profile.activity);
             const targetCalories = Math.max(1200, tdee + profile.deficitGoal);
 
-            // Macro Split: 2g protein/kg, 25% fat, remaining carbs
             const targetProtein = Math.round(profile.weight * 2.0);
             const targetFats = Math.round((targetCalories * 0.25) / 9);
             const remainingCalForCarbs = Math.max(200, targetCalories - (targetProtein * 4) - (targetFats * 9));
@@ -735,7 +735,7 @@
             document.getElementById(id).addEventListener('input', updateTdeeLivePreview);
         });
 
-        window.saveUserProfile = async function() {
+        window.saveUserProfile = function() {
             const gender = document.getElementById('profGender').value;
             const age = parseFloat(document.getElementById('profAge').value) || 25;
             const weight = parseFloat(document.getElementById('profWeight').value) || 70;
@@ -746,38 +746,20 @@
             const calc = computeBmrAndTdee({ gender, age, weight, height, activity, deficitGoal });
             userProfile = { gender, age, weight, height, activity, deficitGoal, ...calc };
 
+            localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(userProfile));
             renderDashboard();
-
-            if (db && currentUser) {
-                try {
-                    const profRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'user_profile');
-                    await setDoc(profRef, userProfile);
-                    showToast("Target TDEE & Defisit berhasil disimpan ke Cloud!");
-                } catch (e) {
-                    console.error("Failed saving profile:", e);
-                    showToast("Target diterapkan!", false);
-                }
-            } else {
-                showToast("Target TDEE & Defisit berhasil diterapkan!");
-            }
+            showToast("Target TDEE & Profil berhasil disimpan di HP!");
             switchTab('dashboard');
         };
 
-        window.saveCustomApiKey = async function() {
+        window.saveCustomApiKey = function() {
             userCustomApiKey = document.getElementById('customApiKeyInput').value.trim();
-            if (db && currentUser) {
-                try {
-                    const keyRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'api_config');
-                    await setDoc(keyRef, { customApiKey: userCustomApiKey });
-                } catch (e) {
-                    console.error(e);
-                }
-            }
+            localStorage.setItem(STORAGE_KEYS.API_KEY, userCustomApiKey);
             closeModal('apiModal');
-            showToast(userCustomApiKey ? "Custom API Key berhasil disimpan!" : "Menggunakan API Key bawaan.");
+            showToast(userCustomApiKey ? "API Key berhasil disimpan permanen!" : "API Key dikosongkan.");
         };
 
-        // --- Dashboard Rendering & Deficit Advisor ---
+        // --- Dashboard Rendering ---
         window.selectQuickDate = function(offset) {
             selectedDashboardDate = getOffsetDateStr(offset);
             const btnToday = document.getElementById('btnToday');
@@ -796,7 +778,6 @@
         function renderDashboard() {
             document.getElementById('dashboardDateLabel').textContent = formatIndoDate(selectedDashboardDate);
 
-            // Filter meals for selectedDashboardDate
             const dayMeals = allMealLogs.filter(m => m.date === selectedDashboardDate);
             const eatenCal = dayMeals.reduce((acc, m) => acc + (Number(m.calories) || 0), 0);
             const eatenPro = dayMeals.reduce((acc, m) => acc + (Number(m.protein) || 0), 0);
@@ -806,7 +787,6 @@
             const targetCal = userProfile.targetCalories;
             const remaining = targetCal - eatenCal;
 
-            // Update Goal Badge
             const goalBadge = document.getElementById('goalBadge');
             if (userProfile.deficitGoal < 0) {
                 goalBadge.textContent = `🔥 Target Defisit (${userProfile.deficitGoal} kkal dari TDEE)`;
@@ -816,7 +796,6 @@
                 goalBadge.textContent = `💪 Target Surplus (+${userProfile.deficitGoal} kkal)`;
             }
 
-            // Remaining or Surplus Display
             const remEl = document.getElementById('dashRemainingCal');
             const remLabel = document.getElementById('dashRemainingLabel');
             if (remaining >= 0) {
@@ -833,7 +812,6 @@
             document.getElementById('dashTargetCal').textContent = targetCal.toLocaleString('id-ID');
             document.getElementById('dashTdeeCal').textContent = userProfile.tdee.toLocaleString('id-ID');
 
-            // Progress Bar
             const pctCal = Math.min(100, Math.round((eatenCal / targetCal) * 100));
             const calBar = document.getElementById('calProgressBar');
             calBar.style.width = `${pctCal}%`;
@@ -841,7 +819,6 @@
                 ? "h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500"
                 : "h-full bg-gradient-to-r from-amber-500 to-rose-500 rounded-full transition-all duration-500";
 
-            // Macros
             document.getElementById('dashProCur').textContent = Math.round(eatenPro);
             document.getElementById('dashProTarget').textContent = userProfile.targetProtein;
             document.getElementById('proBar').style.width = `${Math.min(100, (eatenPro / userProfile.targetProtein) * 100)}%`;
@@ -854,7 +831,6 @@
             document.getElementById('dashFatTarget').textContent = userProfile.targetFats;
             document.getElementById('fatBar').style.width = `${Math.min(100, (eatenFat / userProfile.targetFats) * 100)}%`;
 
-            // Deficit Advisor & Burn Surplus Logic
             const advisorCard = document.getElementById('deficitAdvisorCard');
             const advisorIcon = document.getElementById('advisorIcon');
             const advisorTitle = document.getElementById('advisorTitle');
@@ -888,7 +864,6 @@
                 document.getElementById('burnLiftMins').textContent = `${Math.max(5, Math.round(surplusFromTarget / 6.5))} mnt`;
             }
 
-            // Render Meal List for Dashboard Date
             document.getElementById('mealCountLabel').textContent = dayMeals.length;
             const listEl = document.getElementById('dashboardMealList');
             if (dayMeals.length === 0) {
@@ -932,7 +907,7 @@
             `;
         }
 
-        // --- Quick Chips & Image Compression for AI Scanner ---
+        // --- Quick Chips & Image Compression ---
         window.appendChip = function(text) {
             const input = document.getElementById('descriptionInput');
             if (!input.value.trim()) {
@@ -950,7 +925,6 @@
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
-                    // Compress image via canvas to max 800px for fast mobile API upload
                     const canvas = document.createElement('canvas');
                     const MAX_DIM = 800;
                     let w = img.width;
@@ -981,27 +955,17 @@
             reader.readAsDataURL(file);
         });
 
-        // --- Call Gemini API for Food Image + Plate Description Analysis ---
-        async function fetchWithRetry(url, options, retries = 3) {
-            let delay = 1000;
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const res = await fetch(url, options);
-                    if (res.ok) return res;
-                    if (res.status !== 429 && res.status < 500) return res;
-                } catch (err) {
-                    if (i === retries - 1) throw err;
-                }
-                await new Promise(r => setTimeout(r, delay));
-                delay *= 2;
-            }
-            return fetch(url, options);
-        }
-
+        // --- Call Gemini API ---
         window.analyzeMealWithAI = async function() {
             const description = document.getElementById('descriptionInput').value.trim();
             if (!currentImageBase64 && !description) {
                 showToast("Upload foto makanan atau ketik detail isi piring dulu Bro!", true);
+                return;
+            }
+
+            if (!userCustomApiKey) {
+                openModal('apiModal');
+                showToast("Masukkan Gemini API Key lu dulu di menu kunci 🔑!", true);
                 return;
             }
 
@@ -1016,8 +980,7 @@
             resultCard.classList.add('hidden');
 
             try {
-                const effectiveKey = userCustomApiKey || apiKey;
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${effectiveKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${userCustomApiKey}`;
 
                 const promptText = `Kamu adalah ahli gizi olahraga & diet Indonesia. Analisis makanan ini secara akurat.
 Deskripsi tambahan isi piring dari pengguna: "${description || 'Lihat langsung dari foto makanan'}".
@@ -1054,18 +1017,16 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
                                             "portion": { "type": "STRING" },
                                             "calories": { "type": "NUMBER" },
                                             "protein": { "type": "NUMBER" }
-                                        },
-                                        "propertyOrdering": ["name", "portion", "calories", "protein"]
+                                        }
                                     }
                                 },
                                 "summary": { "type": "STRING" }
-                            },
-                            "propertyOrdering": ["mealTitle", "calories", "protein", "carbs", "fats", "items", "summary"]
+                            }
                         }
                     }
                 };
 
-                const response = await fetchWithRetry(apiUrl, {
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -1073,7 +1034,7 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
 
                 if (!response.ok) {
                     const errData = await response.json().catch(() => ({}));
-                    throw new Error(errData.error?.message || "Gagal menghubungi Gemini API. Cek koneksi atau pengaturan API Key.");
+                    throw new Error(errData.error?.message || "Gagal menghubungi Gemini API. Pastikan API Key benar.");
                 }
 
                 const result = await response.json();
@@ -1091,7 +1052,6 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
                     summary: parsed.summary || ""
                 };
 
-                // Populate Result UI
                 document.getElementById('resMealTitle').textContent = lastScannedResult.title;
                 document.getElementById('resCalories').textContent = lastScannedResult.calories;
                 document.getElementById('resProtein').textContent = lastScannedResult.protein;
@@ -1127,13 +1087,14 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
             }
         };
 
-        // --- Save Meal to Log (Firestore + In-Memory) ---
-        window.saveScannedMealToLog = async function() {
+        // --- Save & Delete Meal Logs ---
+        window.saveScannedMealToLog = function() {
             if (!lastScannedResult) return;
             const dateStr = document.getElementById('scanDateInput').value || getTodayStr();
             const mealType = document.getElementById('mealTypeInput').value;
 
             const newMeal = {
+                id: 'meal-' + Date.now(),
                 date: dateStr,
                 mealType,
                 title: lastScannedResult.title,
@@ -1141,26 +1102,27 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
                 protein: lastScannedResult.protein,
                 carbs: lastScannedResult.carbs,
                 fats: lastScannedResult.fats,
-                itemsJson: JSON.stringify(lastScannedResult.items || []),
+                items: lastScannedResult.items || [],
                 timestamp: Date.now()
             };
 
-            await persistNewMeal(newMeal);
+            allMealLogs.unshift(newMeal);
+            saveMealsToLocalStorage();
 
-            // Reset scanner form & image preview
             document.getElementById('resultCard').classList.add('hidden');
             document.getElementById('descriptionInput').value = '';
             document.getElementById('imageInput').value = '';
             document.getElementById('previewContainer').classList.add('hidden');
             document.getElementById('uploadPlaceholder').classList.remove('hidden');
             currentImageBase64 = null;
-            currentImageMimeType = null;
-            lastScannedResult = null;
+
             selectedDashboardDate = dateStr;
+            renderDashboard();
+            showToast("Makanan tersimpan ke riwayat HP!");
             switchTab('dashboard');
         };
 
-        window.saveManualMeal = async function() {
+        window.saveManualMeal = function() {
             const title = document.getElementById('manName').value.trim();
             const calories = parseInt(document.getElementById('manCal').value) || 0;
             const protein = parseInt(document.getElementById('manPro').value) || 0;
@@ -1173,6 +1135,7 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
             }
 
             const newMeal = {
+                id: 'meal-' + Date.now(),
                 date: selectedDashboardDate,
                 mealType: "Input Manual",
                 title,
@@ -1180,55 +1143,27 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
                 protein,
                 carbs,
                 fats,
-                itemsJson: "[]",
+                items: [],
                 timestamp: Date.now()
             };
 
-            await persistNewMeal(newMeal);
+            allMealLogs.unshift(newMeal);
+            saveMealsToLocalStorage();
             closeModal('manualModal');
             ['manName', 'manCal', 'manPro', 'manCarb', 'manFat'].forEach(id => document.getElementById(id).value = '');
             renderDashboard();
+            showToast("Makanan manual berhasil disimpan!");
         };
 
-        async function persistNewMeal(mealObj) {
-            if (db && currentUser) {
-                try {
-                    const colRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'meal_logs');
-                    await addDoc(colRef, mealObj);
-                    showToast("Makanan tersimpan ke riwayat harian!");
-                    return;
-                } catch (e) {
-                    console.error("Firestore save error:", e);
-                }
-            }
-            // Fallback in-memory if offline/outside environment
-            allMealLogs.unshift({
-                id: 'local-' + Date.now(),
-                ...mealObj,
-                items: JSON.parse(mealObj.itemsJson || "[]")
-            });
-            renderDashboard();
-            showToast("Makanan disimpan ke log hari ini!");
-        }
-
-        window.deleteMealLog = async function(mealId) {
-            if (db && currentUser && !mealId.startsWith('local-')) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'meal_logs', mealId);
-                    await deleteDoc(docRef);
-                    showToast("Log makanan dihapus.");
-                    return;
-                } catch (e) {
-                    console.error("Delete error:", e);
-                }
-            }
+        window.deleteMealLog = function(mealId) {
             allMealLogs = allMealLogs.filter(m => m.id !== mealId);
+            saveMealsToLocalStorage();
             renderDashboard();
             renderHistoryTab();
             showToast("Log makanan dihapus.");
         };
 
-        // --- History & 7-Day Consistency Chart ---
+        // --- History & 7-Day Chart ---
         window.onHistoryDateChange = function(val) {
             if (!val) return;
             selectedHistoryDate = val;
@@ -1256,14 +1191,10 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
                 statusBadge.innerHTML = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-slate-800 text-slate-400">Kosong</span>`;
             } else if (totalCal <= userProfile.targetCalories) {
                 const def = userProfile.tdee - totalCal;
-                statusBadge.innerHTML = `
-                    <span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">✅ Defisit ${def} kkal</span>
-                `;
+                statusBadge.innerHTML = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">✅ Defisit ${def} kkal</span>`;
             } else {
                 const over = totalCal - userProfile.targetCalories;
-                statusBadge.innerHTML = `
-                    <span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">⚠️ +${over} kkal</span>
-                `;
+                statusBadge.innerHTML = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">⚠️ +${over} kkal</span>`;
             }
 
             const histList = document.getElementById('historyMealList');
@@ -1273,7 +1204,6 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
                 histList.innerHTML = dayMeals.map(m => renderMealCardHTML(m)).join('');
             }
 
-            // Render 7-Day Bar Chart
             const chartEl = document.getElementById('weeklyChartContainer');
             const days7 = [];
             for (let i = -6; i <= 0; i++) {
@@ -1318,97 +1248,13 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
                 : `+${Math.abs(totalNetDeficit7).toLocaleString('id-ID')}`;
         }
 
-        // --- Initialize Cloud Storage (Firebase Firestore) ---
-        async function initCloudSync() {
-            const syncText = document.getElementById('syncStatusText');
-            const syncDot = document.getElementById('syncDot');
-
-            try {
-                if (typeof __firebase_config === 'undefined' || !__firebase_config) {
-                    syncDot.className = "w-1.5 h-1.5 rounded-full bg-emerald-400";
-                    syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>Mode Mandiri Aktif</span>`;
-                    return;
-                }
-
-                const firebaseConfig = JSON.parse(__firebase_config);
-                const app = initializeApp(firebaseConfig);
-                const auth = getAuth(app);
-                db = getFirestore(app);
-
-                // RULE 3: Auth Before Queries
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-                currentUser = auth.currentUser;
-                if (!currentUser) return;
-
-                syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>Cloud Sync Aktif (Otomatis Tersimpan)</span>`;
-
-                // 1. Load Profile Settings
-                const profRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'user_profile');
-                const profSnap = await getDoc(profRef);
-                if (profSnap.exists()) {
-                    userProfile = { ...userProfile, ...profSnap.data() };
-                    document.getElementById('profGender').value = userProfile.gender || 'male';
-                    document.getElementById('profAge').value = userProfile.age || 25;
-                    document.getElementById('profWeight').value = userProfile.weight || 70;
-                    document.getElementById('profHeight').value = userProfile.height || 170;
-                    document.getElementById('profActivity').value = String(userProfile.activity || 1.375);
-                    document.getElementById('profDeficit').value = String(userProfile.deficitGoal ?? -500);
-                    updateTdeeLivePreview();
-                }
-
-                // 2. Load API Config
-                const keyRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'api_config');
-                const keySnap = await getDoc(keyRef);
-                if (keySnap.exists() && keySnap.data().customApiKey) {
-                    userCustomApiKey = keySnap.data().customApiKey;
-                    document.getElementById('customApiKeyInput').value = userCustomApiKey;
-                }
-
-                // 3. Real-time Listener for Meal Logs (RULE 1 & RULE 2 compliant)
-                const mealsCol = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'meal_logs');
-                onSnapshot(mealsCol, (snapshot) => {
-                    const loaded = [];
-                    snapshot.forEach(docSnap => {
-                        const data = docSnap.data();
-                        let parsedItems = [];
-                        try {
-                            parsedItems = data.itemsJson ? JSON.parse(data.itemsJson) : [];
-                        } catch (e) {
-                            parsedItems = [];
-                        }
-                        loaded.push({
-                            id: docSnap.id,
-                            ...data,
-                            items: parsedItems
-                        });
-                    });
-                    // Sort in JS memory descending by timestamp
-                    loaded.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-                    allMealLogs = loaded;
-                    renderDashboard();
-                    renderHistoryTab();
-                }, (error) => {
-                    console.error("Firestore listener error:", error);
-                });
-
-            } catch (err) {
-                console.error("Cloud sync initialization notice:", err);
-                syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>Siap Digunakan</span>`;
-            }
-        }
-
         // --- App Bootstrapping ---
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('scanDateInput').value = getTodayStr();
             document.getElementById('historyDatePicker').value = getTodayStr();
+            loadFromLocalStorage();
             updateTdeeLivePreview();
             renderDashboard();
-            initCloudSync();
         });
     </script>
 </body>
