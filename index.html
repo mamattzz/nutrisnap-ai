@@ -26,8 +26,8 @@
             border: 3px solid rgba(255, 255, 255, 0.15);
             border-left-color: #10b981;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             animation: spin 0.8s linear infinite;
         }
         @keyframes spin {
@@ -126,7 +126,7 @@
                     </div>
                 </div>
 
-                <!-- Net Energy Balance Breakdown (Makan vs TDEE + Olahraga) -->
+                <!-- Net Energy Balance Breakdown -->
                 <div class="bg-slate-900/90 rounded-2xl p-3.5 border border-slate-800 space-y-2.5">
                     <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">⚡ Neraca Kalori Hari Ini</span>
@@ -183,7 +183,7 @@
                 </div>
             </div>
 
-            <!-- NEW FEATURE: PANDUAN PORSI SISA KALORI (ANTI BINGUNG) -->
+            <!-- PANDUAN PORSI SISA KALORI -->
             <div id="portionGuideCard" class="glass-panel rounded-3xl p-4 border border-teal-500/30 space-y-3">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
@@ -198,18 +198,13 @@
                     </span>
                 </div>
 
-                <!-- Instant Visual Portion Equivalents -->
-                <div id="instantPortionList" class="grid grid-cols-1 gap-2 text-xs">
-                    <!-- Populated dynamically via JS -->
-                </div>
+                <div id="instantPortionList" class="grid grid-cols-1 gap-2 text-xs"></div>
 
-                <!-- Ask AI for Custom Menu Button -->
                 <button id="askAiPortionBtn" onclick="askAiForRemainingPortion()" class="w-full py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-teal-300 font-bold text-xs border border-teal-500/30 flex items-center justify-center gap-2 transition">
                     <span id="askAiPortionBtnText">✨ Minta AI Susunkan Menu Pas Sisa Kalori Ini</span>
                     <div id="aiPortionSpinner" class="spinner hidden"></div>
                 </button>
 
-                <!-- AI Portion Recommendation Output -->
                 <div id="aiPortionResultBox" class="hidden bg-slate-900/90 p-3.5 rounded-2xl border border-teal-500/30 space-y-2 text-xs">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-teal-400">🤖 Rekomendasi Menu AI:</span>
@@ -250,7 +245,7 @@
                 </div>
             </div>
 
-            <!-- Dual Quick CTAs (Scan Makanan & Catat Olahraga) -->
+            <!-- Dual Quick CTAs -->
             <div class="grid grid-cols-2 gap-2.5">
                 <button onclick="switchTab('scanner')" class="py-3.5 px-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-[0.99]">
                     <span>📸 Scan Makanan</span>
@@ -403,13 +398,11 @@
         <!-- ================= TAB 3: CATAT OLAHRAGA (WORKOUT LOG) ================= -->
         <section id="tab-workout" class="hidden space-y-4">
             <div class="glass-panel rounded-3xl p-5 space-y-4 border border-purple-500/20">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <h2 class="text-lg font-extrabold text-white flex items-center gap-2">
-                            🏋️‍♂️ Catat Olahraga & Bonus Bakar
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Kalori olahraga dihitung sebagai bonus pembakaran lemak tanpa mengubah batas kuota makan u.</p>
-                    </div>
+                <div>
+                    <h2 class="text-lg font-extrabold text-white flex items-center gap-2">
+                        🏋️‍♂️ Catat Olahraga & Bonus Bakar
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Pilih dari 4 preset cepat atau klik tombol <strong>Input Manual</strong> untuk olahraga apa saja (bisa pakai Menit, Set × Repetisi, atau Langkah).</p>
                 </div>
 
                 <!-- Tanggal Latihan -->
@@ -418,42 +411,86 @@
                     <input type="date" id="workoutDateInput" onchange="renderWorkoutTab()" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-purple-500">
                 </div>
 
-                <!-- Pilihan Preset Olahraga -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Pilih Preset Olahraga</label>
+                <!-- 1. Pilihan 4 Preset + 1 Tombol Input Manual -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400">1. Pilih Preset atau Input Manual</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="selectWorkoutPreset('Barbell Curl', 'mins', 4.5)" id="preset-barbell" class="p-3 rounded-2xl border border-purple-500 bg-purple-500/15 text-left transition">
+                        <button type="button" onclick="selectWorkoutPreset('Barbell Curl', 'reps', 4.5, 'preset-barbell')" id="preset-barbell" class="p-3 rounded-2xl border border-purple-500 bg-purple-500/15 text-left transition">
                             <p class="text-base">💪</p>
                             <p class="text-xs font-extrabold text-white mt-1">Barbell Curl</p>
                             <p class="text-[10px] text-slate-400">Latihan beban & lengan</p>
                         </button>
-                        <button type="button" onclick="selectWorkoutPreset('Push-up & Sit-up', 'mins', 5.5)" id="preset-pushup" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
+                        <button type="button" onclick="selectWorkoutPreset('Push-up & Sit-up', 'reps', 5.5, 'preset-pushup')" id="preset-pushup" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
                             <p class="text-base">🔥</p>
                             <p class="text-xs font-extrabold text-white mt-1">Push-up & Sit-up</p>
                             <p class="text-[10px] text-slate-400">Bodyweight & core</p>
                         </button>
-                        <button type="button" onclick="selectWorkoutPreset('Jalan Kaki', 'steps', 3.5)" id="preset-walk" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
+                        <button type="button" onclick="selectWorkoutPreset('Jalan Kaki', 'steps', 3.5, 'preset-walk')" id="preset-walk" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
                             <p class="text-base">🚶‍♂️</p>
                             <p class="text-xs font-extrabold text-white mt-1">Jalan Kaki</p>
                             <p class="text-[10px] text-slate-400">Input langkah / durasi</p>
                         </button>
-                        <button type="button" onclick="selectWorkoutPreset('Sprint / HIIT', 'mins', 9.5)" id="preset-hiit" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
+                        <button type="button" onclick="selectWorkoutPreset('Sprint / HIIT', 'mins', 9.5, 'preset-hiit')" id="preset-hiit" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
                             <p class="text-base">🏃⚡</p>
                             <p class="text-xs font-extrabold text-white mt-1">Sprint / HIIT</p>
                             <p class="text-[10px] text-slate-400">Kardio intensitas tinggi</p>
                         </button>
                     </div>
+
+                    <!-- Tombol ke-5: Input Manual Olahraga Lain -->
+                    <button type="button" onclick="selectManualWorkoutMode()" id="preset-manual" class="w-full p-3 rounded-2xl border border-dashed border-slate-600 bg-slate-900/80 hover:border-purple-400 text-left transition flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-lg">✏️</span>
+                            <div>
+                                <p class="text-xs font-extrabold text-white">Input Manual / Olahraga Lainnya</p>
+                                <p class="text-[10px] text-slate-400">Bebas ketik: Incline Walk, Incline Sit-up, Goblet Squat, dll</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold text-purple-400 bg-purple-500/10 px-2 py-1 rounded-lg border border-purple-500/20">Ketik Bebas</span>
+                    </button>
                 </div>
 
-                <!-- Form Detail Olahraga -->
+                <!-- 2. Form Detail Olahraga -->
                 <div class="space-y-3 pt-1">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Latihan (Bisa Diedit)</label>
-                        <input type="text" id="woNameInput" value="Barbell Curl" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-purple-500">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Olahraga / Gerakan</label>
+                        <input type="text" id="woNameInput" value="Barbell Curl" placeholder="Contoh: Incline Walk kemiringan 12 / Incline Sit-up..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-purple-500">
                     </div>
 
-                    <!-- Mode Input Durasi (Menit) vs Langkah -->
-                    <div id="woDurationBox" class="grid grid-cols-2 gap-2.5">
+                    <!-- Pemilih Mode Satuan: Menit vs Set x Repetisi vs Langkah -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">2. Pilih Cara Hitung Latihan</label>
+                        <div class="grid grid-cols-3 gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                            <button type="button" onclick="setWorkoutUnitMode('reps')" id="unitBtn-reps" class="py-2 rounded-lg text-[11px] font-bold bg-purple-500 text-white transition">
+                                🔢 Set × Repetisi
+                            </button>
+                            <button type="button" onclick="setWorkoutUnitMode('mins')" id="unitBtn-mins" class="py-2 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-white transition">
+                                ⏱️ Durasi (Menit)
+                            </button>
+                            <button type="button" onclick="setWorkoutUnitMode('steps')" id="unitBtn-steps" class="py-2 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-white transition">
+                                👣 Langkah
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Box Input Mode A: Set x Repetisi (+ Beban Opsional) -->
+                    <div id="woBoxReps" class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Jumlah Set</label>
+                            <input type="number" id="woSetsInput" value="4" min="1" oninput="recalcWorkoutBurn()" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Repetisi / Set</label>
+                            <input type="number" id="woRepsInput" value="12" min="1" oninput="recalcWorkoutBurn()" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Beban (kg)</label>
+                            <input type="number" id="woLoadKgInput" value="10" min="0" step="0.5" placeholder="0 = Bodyweight" oninput="recalcWorkoutBurn()" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                    </div>
+
+                    <!-- Box Input Mode B: Durasi (Menit) atau Langkah -->
+                    <div id="woBoxDuration" class="hidden grid grid-cols-2 gap-2.5">
                         <div>
                             <label id="woAmountLabel" class="block text-xs font-semibold text-slate-300 mb-1">Durasi (Menit)</label>
                             <input type="number" id="woAmountInput" value="20" min="1" oninput="recalcWorkoutBurn()" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-purple-500">
@@ -468,14 +505,23 @@
                         </div>
                     </div>
 
+                    <!-- Tombol Hitung Kalori Olahraga Manual dengan AI -->
+                    <button type="button" id="aiCalcWorkoutBtn" onclick="calculateWorkoutWithAI()" class="w-full py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-300 font-bold text-xs border border-purple-500/30 flex items-center justify-center gap-2 transition">
+                        <span id="aiCalcWorkoutBtnText">🤖 Gak Tahu Kalorinya? Hitung Akurat pakai AI</span>
+                        <div id="aiWorkoutSpinner" class="spinner hidden"></div>
+                    </button>
+
+                    <!-- Catatan Penjelasan AI untuk Olahraga -->
+                    <div id="aiWorkoutNoteBox" class="hidden bg-slate-900/90 p-3 rounded-xl border border-purple-500/30 text-[11px] text-slate-300 leading-relaxed"></div>
+
                     <!-- Estimasi Kalori Terbakar (Otomatis & Bisa Diedit) -->
                     <div class="bg-slate-900/90 p-3.5 rounded-2xl border border-purple-500/30 flex items-center justify-between">
                         <div>
                             <p class="text-[11px] font-bold text-purple-300 uppercase">Estimasi Kalori Keluar</p>
-                            <p class="text-[10px] text-slate-400">Dihitung otomatis dari BB <span id="woUserWeightLabel">70</span> kg (bisa diubah manual)</p>
+                            <p class="text-[10px] text-slate-400">Disesuaikan BB <span id="woUserWeightLabel">70</span> kg (bisa diubah manual)</p>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <input type="number" id="woCaloriesInput" value="110" class="w-20 px-2.5 py-1.5 bg-slate-800 border border-purple-500/40 rounded-xl text-sm font-black text-purple-400 text-right focus:outline-none">
+                            <input type="number" id="woCaloriesInput" value="45" class="w-20 px-2.5 py-1.5 bg-slate-800 border border-purple-500/40 rounded-xl text-sm font-black text-purple-400 text-right focus:outline-none">
                             <span class="text-xs font-bold text-slate-400">kkal</span>
                         </div>
                     </div>
@@ -773,8 +819,8 @@
         let currentImageMimeType = null;
         let lastScannedResult = null;
 
-        // Workout Preset State
-        let currentWorkoutUnit = 'mins'; // 'mins' or 'steps'
+        // Workout State: 'reps', 'mins', or 'steps'
+        let currentWorkoutUnit = 'reps';
         let currentWorkoutMet = 4.5;
 
         // --- Load & Save LocalStorage ---
@@ -959,71 +1005,233 @@
             showToast(userCustomApiKey ? "API Key berhasil disimpan permanen!" : "API Key dikosongkan.");
         };
 
-        // --- Workout Preset & Calculation Logic ---
-        window.selectWorkoutPreset = function(name, unit, metVal) {
-            document.getElementById('woNameInput').value = name;
-            currentWorkoutUnit = unit;
-            currentWorkoutMet = metVal;
-
-            const presets = [
-                { id: 'preset-barbell', name: 'Barbell Curl' },
-                { id: 'preset-pushup', name: 'Push-up & Sit-up' },
-                { id: 'preset-walk', name: 'Jalan Kaki' },
-                { id: 'preset-hiit', name: 'Sprint / HIIT' }
-            ];
-            presets.forEach(p => {
-                const btn = document.getElementById(p.id);
-                if (p.name === name) {
+        // --- Workout Preset, Manual Mode, Set x Reps & AI Calculator Logic ---
+        function highlightPresetButton(activeId) {
+            const presetIds = ['preset-barbell', 'preset-pushup', 'preset-walk', 'preset-hiit'];
+            presetIds.forEach(id => {
+                const btn = document.getElementById(id);
+                if (id === activeId) {
                     btn.className = "p-3 rounded-2xl border border-purple-500 bg-purple-500/15 text-left transition";
                 } else {
                     btn.className = "p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition";
                 }
             });
 
+            const manualBtn = document.getElementById('preset-manual');
+            if (activeId === 'preset-manual') {
+                manualBtn.className = "w-full p-3 rounded-2xl border border-purple-500 bg-purple-500/15 text-left transition flex items-center justify-between";
+            } else {
+                manualBtn.className = "w-full p-3 rounded-2xl border border-dashed border-slate-600 bg-slate-900/80 hover:border-purple-400 text-left transition flex items-center justify-between";
+            }
+        }
+
+        window.selectWorkoutPreset = function(name, defaultUnit, metVal, btnId) {
+            document.getElementById('woNameInput').value = name;
+            currentWorkoutMet = metVal;
+            document.getElementById('aiWorkoutNoteBox').classList.add('hidden');
+            highlightPresetButton(btnId);
+
+            if (name === 'Push-up & Sit-up') {
+                document.getElementById('woLoadKgInput').value = 0;
+            } else if (name === 'Barbell Curl') {
+                document.getElementById('woLoadKgInput').value = 10;
+            }
+
+            setWorkoutUnitMode(defaultUnit);
+        };
+
+        window.selectManualWorkoutMode = function() {
+            highlightPresetButton('preset-manual');
+            currentWorkoutMet = 5.0;
+            document.getElementById('aiWorkoutNoteBox').classList.add('hidden');
+            const nameInput = document.getElementById('woNameInput');
+            nameInput.value = '';
+            nameInput.focus();
+            showToast("Mode Manual aktif! Ketik nama olahraga u & pilih Set/Menit.");
+        };
+
+        window.setWorkoutUnitMode = function(unitMode) {
+            currentWorkoutUnit = unitMode;
+
+            const modes = ['reps', 'mins', 'steps'];
+            modes.forEach(m => {
+                const b = document.getElementById(`unitBtn-${m}`);
+                if (m === unitMode) {
+                    b.className = "py-2 rounded-lg text-[11px] font-bold bg-purple-500 text-white transition";
+                } else {
+                    b.className = "py-2 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-white transition";
+                }
+            });
+
+            const boxReps = document.getElementById('woBoxReps');
+            const boxDur = document.getElementById('woBoxDuration');
             const amountLabel = document.getElementById('woAmountLabel');
             const amountInput = document.getElementById('woAmountInput');
-            if (unit === 'steps') {
-                amountLabel.textContent = "Jumlah Langkah Kaki";
-                amountInput.value = 8000;
-                amountInput.step = 500;
-            } else {
+
+            if (unitMode === 'reps') {
+                boxReps.classList.remove('hidden');
+                boxDur.classList.add('hidden');
+            } else if (unitMode === 'mins') {
+                boxReps.classList.add('hidden');
+                boxDur.classList.remove('hidden');
                 amountLabel.textContent = "Durasi Latihan (Menit)";
-                amountInput.value = 20;
+                if (parseFloat(amountInput.value) > 300) amountInput.value = 20;
                 amountInput.step = 5;
+            } else if (unitMode === 'steps') {
+                boxReps.classList.add('hidden');
+                boxDur.classList.remove('hidden');
+                amountLabel.textContent = "Jumlah Langkah Kaki";
+                if (parseFloat(amountInput.value) < 500) amountInput.value = 8000;
+                amountInput.step = 500;
             }
+
             recalcWorkoutBurn();
         };
 
         window.recalcWorkoutBurn = function() {
-            const amount = parseFloat(document.getElementById('woAmountInput').value) || 0;
-            const intensityMult = parseFloat(document.getElementById('woIntensityInput').value) || 1.0;
             const weight = userProfile.weight || 70;
-
             let burned = 0;
-            if (currentWorkoutUnit === 'steps') {
-                // ~0.045 kcal per step scaled to 70kg body weight
-                burned = Math.round(amount * 0.045 * (weight / 70) * intensityMult);
+
+            if (currentWorkoutUnit === 'reps') {
+                const sets = parseFloat(document.getElementById('woSetsInput').value) || 0;
+                const reps = parseFloat(document.getElementById('woRepsInput').value) || 0;
+                const loadKg = parseFloat(document.getElementById('woLoadKgInput').value) || 0;
+                const totalReps = sets * reps;
+
+                // ~4 seconds work + rest factor per rep (~0.45 to 0.85 kcal per rep depending on body weight & external load)
+                const loadFactor = 1 + (loadKg / 40);
+                burned = Math.round(totalReps * 0.42 * (weight / 70) * loadFactor);
+            } else if (currentWorkoutUnit === 'steps') {
+                const steps = parseFloat(document.getElementById('woAmountInput').value) || 0;
+                const intensityMult = parseFloat(document.getElementById('woIntensityInput').value) || 1.0;
+                burned = Math.round(steps * 0.045 * (weight / 70) * intensityMult);
             } else {
-                // Standard MET formula: (MET * 3.5 * weight_kg / 200) * minutes
-                burned = Math.round(((currentWorkoutMet * 3.5 * weight) / 200) * amount * intensityMult);
+                const mins = parseFloat(document.getElementById('woAmountInput').value) || 0;
+                const intensityMult = parseFloat(document.getElementById('woIntensityInput').value) || 1.0;
+                burned = Math.round(((currentWorkoutMet * 3.5 * weight) / 200) * mins * intensityMult);
             }
+
             document.getElementById('woCaloriesInput').value = Math.max(0, burned);
+        };
+
+        // --- AI Custom Workout Calorie Calculator ---
+        window.calculateWorkoutWithAI = async function() {
+            const woName = document.getElementById('woNameInput').value.trim();
+            if (!woName) {
+                showToast("Ketik dulu nama olahraganya (misal: Incline Walk / Incline Sit-up)!", true);
+                document.getElementById('woNameInput').focus();
+                return;
+            }
+
+            if (!userCustomApiKey) {
+                openModal('apiModal');
+                showToast("Masukkan Gemini API Key lu dulu di menu kunci 🔑!", true);
+                return;
+            }
+
+            let volumeDesc = "";
+            if (currentWorkoutUnit === 'reps') {
+                const s = document.getElementById('woSetsInput').value || 0;
+                const r = document.getElementById('woRepsInput').value || 0;
+                const kg = document.getElementById('woLoadKgInput').value || 0;
+                volumeDesc = `${s} set x ${r} repetisi (total ${s * r} repetisi) dengan beban tambahan ${kg} kg`;
+            } else if (currentWorkoutUnit === 'steps') {
+                const st = document.getElementById('woAmountInput').value || 0;
+                volumeDesc = `${st} langkah kaki`;
+            } else {
+                const m = document.getElementById('woAmountInput').value || 0;
+                const intEl = document.getElementById('woIntensityInput');
+                const intText = intEl.options[intEl.selectedIndex].text;
+                volumeDesc = `durasi ${m} menit dengan intensitas ${intText}`;
+            }
+
+            const btn = document.getElementById('aiCalcWorkoutBtn');
+            const btnText = document.getElementById('aiCalcWorkoutBtnText');
+            const spinner = document.getElementById('aiWorkoutSpinner');
+            const noteBox = document.getElementById('aiWorkoutNoteBox');
+
+            btn.disabled = true;
+            btnText.textContent = "AI sedang menghitung kalori latihan...";
+            spinner.classList.remove('hidden');
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${userCustomApiKey}`;
+                const promptText = `Kamu adalah pelatih fisik & ahli fisiologi olahraga. Hitung estimasi kalori yang terbakar secara realistis untuk pengguna dengan profil: Berat Badan ${userProfile.weight} kg, Tinggi ${userProfile.height} cm, Usia ${userProfile.age} tahun.
+Olahraga yang dilakukan: "${woName}"
+Volume/Durasi: ${volumeDesc}.
+Berikan angka kalori terbakar (kkal) yang akurat beserta penjelasan singkat 1-2 kalimat dalam bahasa Indonesia santai.`;
+
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: promptText }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                "caloriesBurned": { "type": "NUMBER" },
+                                "explanation": { "type": "STRING" }
+                            },
+                            propertyOrdering: ["caloriesBurned", "explanation"]
+                        }
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error?.message || "Gagal menghubungi Gemini API.");
+                }
+
+                const result = await response.json();
+                const parsed = JSON.parse(result.candidates[0].content.parts[0].text);
+                const estCal = Math.max(1, Math.round(parsed.caloriesBurned || 0));
+
+                document.getElementById('woCaloriesInput').value = estCal;
+                noteBox.innerHTML = `<strong class="text-purple-400">🤖 Hitungan AI (${estCal} kkal):</strong> ${parsed.explanation || ''}`;
+                noteBox.classList.remove('hidden');
+                showToast(`AI berhasil menghitung: ~${estCal} kkal terbakar!`);
+            } catch (e) {
+                showToast(e.message, true);
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = "🤖 Gak Tahu Kalorinya? Hitung Akurat pakai AI";
+                spinner.classList.add('hidden');
+            }
         };
 
         window.saveWorkoutLog = function() {
             const dateStr = document.getElementById('workoutDateInput').value || getTodayStr();
-            const title = document.getElementById('woNameInput').value.trim() || "Olahraga";
-            const amount = parseFloat(document.getElementById('woAmountInput').value) || 0;
+            const title = document.getElementById('woNameInput').value.trim();
             const caloriesBurned = parseInt(document.getElementById('woCaloriesInput').value) || 0;
 
+            if (!title) {
+                showToast("Isi nama olahraganya dulu Bro!", true);
+                document.getElementById('woNameInput').focus();
+                return;
+            }
             if (caloriesBurned <= 0) {
-                showToast("Masukkan durasi atau kalori olahraga yang valid!", true);
+                showToast("Masukkan jumlah kalori olahraga yang valid!", true);
                 return;
             }
 
-            const detailStr = currentWorkoutUnit === 'steps'
-                ? `${amount.toLocaleString('id-ID')} langkah`
-                : `${amount} menit`;
+            let detailStr = "";
+            if (currentWorkoutUnit === 'reps') {
+                const sets = parseInt(document.getElementById('woSetsInput').value) || 1;
+                const reps = parseInt(document.getElementById('woRepsInput').value) || 1;
+                const loadKg = parseFloat(document.getElementById('woLoadKgInput').value) || 0;
+                detailStr = loadKg > 0 ? `${sets} Set × ${reps} Rep (${loadKg} kg)` : `${sets} Set × ${reps} Rep`;
+            } else if (currentWorkoutUnit === 'steps') {
+                const amount = parseInt(document.getElementById('woAmountInput').value) || 0;
+                detailStr = `${amount.toLocaleString('id-ID')} langkah`;
+            } else {
+                const amount = parseInt(document.getElementById('woAmountInput').value) || 0;
+                detailStr = `${amount} menit`;
+            }
 
             const newWo = {
                 id: 'wo-' + Date.now(),
@@ -1037,9 +1245,10 @@
             allWorkoutLogs.unshift(newWo);
             saveWorkoutsToLocalStorage();
             selectedDashboardDate = dateStr;
+            document.getElementById('aiWorkoutNoteBox').classList.add('hidden');
             renderWorkoutTab();
             renderDashboard();
-            showToast(`Mantap! +${caloriesBurned} kkal bonus bakar lemak tersimpan!`);
+            showToast(`Mantap! ${title} (+${caloriesBurned} kkal) tersimpan!`);
         };
 
         window.deleteWorkoutLog = function(woId) {
@@ -1109,13 +1318,11 @@
             const dayWorkouts = allWorkoutLogs.filter(w => w.date === selectedDashboardDate);
             const workoutBurnCal = dayWorkouts.reduce((acc, w) => acc + (Number(w.caloriesBurned) || 0), 0);
 
-            // LOCKED FOOD QUOTA: Workout does NOT increase food target
             const targetCal = userProfile.targetCalories;
             const remainingFoodQuota = targetCal - eatenCal;
 
-            // Total Energy Out = TDEE + Workout Bonus
             const totalEnergyOut = userProfile.tdee + workoutBurnCal;
-            const netDeficit = totalEnergyOut - eatenCal; // Positive = Deficit, Negative = Surplus
+            const netDeficit = totalEnergyOut - eatenCal;
 
             const remEl = document.getElementById('dashRemainingCal');
             const remLabel = document.getElementById('dashRemainingLabel');
@@ -1135,7 +1342,6 @@
             document.getElementById('dashWorkoutCal').textContent = workoutBurnCal.toLocaleString('id-ID');
             document.getElementById('dashTotalBurnCal').textContent = totalEnergyOut.toLocaleString('id-ID');
 
-            // Net Balance Badge
             const netBadge = document.getElementById('netBalanceBadge');
             if (eatenCal === 0 && workoutBurnCal === 0) {
                 netBadge.textContent = `Target Defisit ${Math.abs(userProfile.deficitGoal)} kkal`;
@@ -1155,7 +1361,6 @@
                 ? "h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500"
                 : "h-full bg-gradient-to-r from-amber-500 to-rose-500 rounded-full transition-all duration-500";
 
-            // Macros
             document.getElementById('dashProCur').textContent = Math.round(eatenPro);
             document.getElementById('dashProTarget').textContent = userProfile.targetProtein;
             document.getElementById('proBar').style.width = `${Math.min(100, (eatenPro / userProfile.targetProtein) * 100)}%`;
@@ -1168,10 +1373,8 @@
             document.getElementById('dashFatTarget').textContent = userProfile.targetFats;
             document.getElementById('fatBar').style.width = `${Math.min(100, (eatenFat / userProfile.targetFats) * 100)}%`;
 
-            // Render Visual Portion Guide for Remaining Quota
             renderVisualPortionGuide(remainingFoodQuota, Math.max(0, userProfile.targetProtein - eatenPro));
 
-            // Advisor Card Logic
             const advisorCard = document.getElementById('deficitAdvisorCard');
             const advisorIcon = document.getElementById('advisorIcon');
             const advisorTitle = document.getElementById('advisorTitle');
@@ -1208,7 +1411,6 @@
                 }
             }
 
-            // Render Meals List
             document.getElementById('mealCountLabel').textContent = dayMeals.length;
             const listEl = document.getElementById('dashboardMealList');
             if (dayMeals.length === 0) {
@@ -1217,7 +1419,6 @@
                 listEl.innerHTML = dayMeals.map(meal => renderMealCardHTML(meal)).join('');
             }
 
-            // Render Workouts List on Dashboard
             document.getElementById('workoutCountLabel').textContent = dayWorkouts.length;
             const woListEl = document.getElementById('dashboardWorkoutList');
             if (dayWorkouts.length === 0) {
@@ -1227,7 +1428,6 @@
             }
         }
 
-        // --- Visual Portion Translator Function ---
         function renderVisualPortionGuide(remCal, remPro) {
             const badge = document.getElementById('portionGuideCalBadge');
             const list = document.getElementById('instantPortionList');
@@ -1249,12 +1449,6 @@
             badge.textContent = `Sisa ${remCal} kkal`;
             badge.className = "text-xs font-black bg-teal-500/20 text-teal-300 px-2.5 py-1 rounded-xl border border-teal-500/30";
 
-            // Dynamic math for realistic Indonesian portions:
-            // 1 centong nasi putih (~100g) = 130 kcal
-            // 1 potong dada ayam tanpa kulit (~100g matang) = 165 kcal, 31g protein
-            // 1 butir telur rebus = 75 kcal, 6g protein
-            // 1 mangkuk sayur bening/tumis = 45 kcal
-
             let optionsHTML = '';
             if (remCal < 250) {
                 const eggs = Math.max(1, Math.round(remCal / 75));
@@ -1270,12 +1464,10 @@
                     </div>
                 `;
             } else {
-                // Allocate ~40% to rice, ~45% to chicken/egg, ~15% to veggies
                 const riceCentong = Math.max(0.5, Math.round(((remCal * 0.4) / 130) * 2) / 2);
                 const riceCal = Math.round(riceCentong * 130);
                 const leftForLauk = Math.max(80, remCal - riceCal - 40);
                 const chickenPortion = Math.max(0.5, Math.round((leftForLauk / 165) * 2) / 2);
-
                 const eggsOnly = Math.max(1, Math.floor((remCal - 130) / 75));
 
                 optionsHTML = `
@@ -1292,7 +1484,7 @@
             list.innerHTML = optionsHTML;
         }
 
-        // --- Ask AI for Custom Remaining Quota Menu ---
+        // --- Ask AI for Custom Remaining Quota Menu (gemini-3-flash-preview) ---
         window.askAiForRemainingPortion = async function() {
             if (!userCustomApiKey) {
                 openModal('apiModal');
@@ -1451,7 +1643,7 @@ Berikan 3 opsi kombinasi menu makanan Indonesia yang gampang didapat (seperti na
             reader.readAsDataURL(file);
         });
 
-        // --- Call Gemini API for Food Scanner ---
+        // --- Call Gemini API for Food Scanner (gemini-3-flash-preview) ---
         window.analyzeMealWithAI = async function() {
             const description = document.getElementById('descriptionInput').value.trim();
             if (!currentImageBase64 && !description) {
