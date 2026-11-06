@@ -26,8 +26,8 @@
             border: 3px solid rgba(255, 255, 255, 0.15);
             border-left-color: #10b981;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             animation: spin 0.8s linear infinite;
         }
         @keyframes spin {
@@ -59,7 +59,7 @@
                     </h1>
                     <p id="syncStatusText" class="text-[11px] text-slate-400 flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400" id="syncDot"></span>
-                        <span>Tersimpan di Perangkat (Local Storage)</span>
+                        <span>Tersimpan Permanen di Perangkat</span>
                     </p>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                 <div class="flex items-center gap-2">
                     <span class="text-base">📅</span>
                     <div>
-                        <p class="text-[11px] text-slate-400 font-medium">Ringkasan Nutrisi</p>
+                        <p class="text-[11px] text-slate-400 font-medium">Ringkasan Energi & Nutrisi</p>
                         <p id="dashboardDateLabel" class="text-xs font-bold text-white">Hari Ini</p>
                     </div>
                 </div>
@@ -98,16 +98,16 @@
                 </div>
             </div>
 
-            <!-- Main Calorie Ring & Deficit Card -->
+            <!-- Main Calorie Ring & Deficit Card (LOCKED FOOD TARGET) -->
             <div class="glass-panel rounded-3xl p-5 space-y-4 relative overflow-hidden">
                 <div class="flex items-start justify-between">
                     <div>
                         <span id="goalBadge" class="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                            🔥 Target Defisit (-500 kkal)
+                            🔒 Kuota Makan Dikunci
                         </span>
                         <h2 class="text-3xl font-black text-white mt-2">
                             <span id="dashRemainingCal">1,800</span>
-                            <span class="text-sm font-medium text-slate-400" id="dashRemainingLabel">kkal tersisa</span>
+                            <span class="text-sm font-medium text-slate-400" id="dashRemainingLabel">kkal kuota makan tersisa</span>
                         </h2>
                     </div>
                     <button onclick="switchTab('tdee')" class="text-xs text-emerald-400 hover:underline font-medium flex items-center gap-1">
@@ -121,14 +121,38 @@
                         <div id="calProgressBar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                     <div class="flex justify-between text-xs text-slate-400 font-medium pt-1">
-                        <span>Masuk: <strong id="dashEatenCal" class="text-white">0</strong> kkal</span>
-                        <span>Target Makan: <strong id="dashTargetCal" class="text-emerald-400">1,800</strong> kkal</span>
-                        <span>TDEE: <strong id="dashTdeeCal" class="text-slate-300">2,300</strong> kkal</span>
+                        <span>Makan: <strong id="dashEatenCal" class="text-white">0</strong> kkal</span>
+                        <span>Batas Makan: <strong id="dashTargetCal" class="text-emerald-400">1,800</strong> kkal</span>
                     </div>
                 </div>
 
+                <!-- Net Energy Balance Breakdown (Makan vs TDEE + Olahraga) -->
+                <div class="bg-slate-900/90 rounded-2xl p-3.5 border border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">⚡ Neraca Kalori Hari Ini</span>
+                        <span id="netBalanceBadge" class="text-xs font-extrabold text-emerald-400">Defisit 0 kkal</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="bg-slate-800/60 p-2 rounded-xl">
+                            <p class="text-[10px] text-slate-400">Bakar Alami (TDEE)</p>
+                            <p class="text-xs font-bold text-slate-200 mt-0.5"><span id="dashTdeeCal">2,300</span> kkal</p>
+                        </div>
+                        <div class="bg-purple-500/10 border border-purple-500/20 p-2 rounded-xl cursor-pointer" onclick="switchTab('workout')">
+                            <p class="text-[10px] text-purple-300 font-semibold">+ Bonus Olahraga</p>
+                            <p class="text-xs font-extrabold text-purple-400 mt-0.5">+<span id="dashWorkoutCal">0</span> kkal</p>
+                        </div>
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 p-2 rounded-xl">
+                            <p class="text-[10px] text-emerald-300 font-semibold">Total Keluar</p>
+                            <p class="text-xs font-extrabold text-emerald-400 mt-0.5"><span id="dashTotalBurnCal">2,300</span> kkal</p>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-400 leading-relaxed text-center">
+                        🔒 <em>Kalori olahraga tidak menambah kuota makan u agar defisit lemak makin cepat!</em>
+                    </p>
+                </div>
+
                 <!-- Macros Grid -->
-                <div class="grid grid-cols-3 gap-2.5 pt-2">
+                <div class="grid grid-cols-3 gap-2.5 pt-1">
                     <div class="glass-card-light p-3 rounded-2xl">
                         <div class="flex justify-between items-center text-xs mb-1">
                             <span class="font-bold text-blue-400">Protein</span>
@@ -159,15 +183,49 @@
                 </div>
             </div>
 
+            <!-- NEW FEATURE: PANDUAN PORSI SISA KALORI (ANTI BINGUNG) -->
+            <div id="portionGuideCard" class="glass-panel rounded-3xl p-4 border border-teal-500/30 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🍱</span>
+                        <div>
+                            <h3 class="text-xs font-extrabold text-white uppercase tracking-wide">Contekan Porsi Sisa Kuota Makan</h3>
+                            <p id="portionGuideSubtitle" class="text-[11px] text-slate-400">Setara apakah sisa kuota kalori u hari ini?</p>
+                        </div>
+                    </div>
+                    <span id="portionGuideCalBadge" class="text-xs font-black bg-teal-500/20 text-teal-300 px-2.5 py-1 rounded-xl border border-teal-500/30">
+                        1,800 kkal
+                    </span>
+                </div>
+
+                <!-- Instant Visual Portion Equivalents -->
+                <div id="instantPortionList" class="grid grid-cols-1 gap-2 text-xs">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- Ask AI for Custom Menu Button -->
+                <button id="askAiPortionBtn" onclick="askAiForRemainingPortion()" class="w-full py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-teal-300 font-bold text-xs border border-teal-500/30 flex items-center justify-center gap-2 transition">
+                    <span id="askAiPortionBtnText">✨ Minta AI Susunkan Menu Pas Sisa Kalori Ini</span>
+                    <div id="aiPortionSpinner" class="spinner hidden"></div>
+                </button>
+
+                <!-- AI Portion Recommendation Output -->
+                <div id="aiPortionResultBox" class="hidden bg-slate-900/90 p-3.5 rounded-2xl border border-teal-500/30 space-y-2 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-teal-400">🤖 Rekomendasi Menu AI:</span>
+                        <button onclick="document.getElementById('aiPortionResultBox').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
+                    </div>
+                    <div id="aiPortionResultList" class="space-y-2 text-slate-200 leading-relaxed"></div>
+                </div>
+            </div>
+
             <!-- Dynamic Deficit Explanation & Burn Recommendation Card -->
             <div id="deficitAdvisorCard" class="glass-panel rounded-3xl p-4 border-l-4 border-l-emerald-500 space-y-2">
                 <div class="flex items-start gap-3">
                     <div id="advisorIcon" class="text-2xl">💡</div>
                     <div class="space-y-1 flex-1">
                         <h3 id="advisorTitle" class="text-sm font-bold text-white">Kenapa Gak Perlu Bakar Semua Kalori Makanan?</h3>
-                        <p id="advisorDesc" class="text-xs text-slate-300 leading-relaxed">
-                            Tubuh u otomatis membakar <strong class="text-emerald-400" id="eduTdeeVal">2,300 kkal/hari</strong> (TDEE) untuk fungsi organ, napas, dan gerak harian. Selama u makan di sekitar target <strong class="text-white" id="eduTargetVal">1,800 kkal</strong>, u udah otomatis <strong>defisit 500 kkal</strong> tanpa wajib olahraga ekstrem!
-                        </p>
+                        <p id="advisorDesc" class="text-xs text-slate-300 leading-relaxed"></p>
                     </div>
                 </div>
                 <div id="surplusBurnBox" class="hidden pt-2 mt-2 border-t border-slate-700/80 space-y-2">
@@ -186,16 +244,21 @@
                         <div class="bg-slate-800/90 p-2.5 rounded-xl border border-slate-700">
                             <p class="text-base">🏋️‍♂️</p>
                             <p id="burnLiftMins" class="text-xs font-extrabold text-white mt-0.5">0 mnt</p>
-                            <p class="text-[10px] text-slate-400">Push-up & Squat</p>
+                            <p class="text-[10px] text-slate-400">Barbell & Push-up</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick CTA to Scan Meal -->
-            <button onclick="switchTab('scanner')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-sm shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition active:scale-[0.99]">
-                <span>📸 Foto / Input Makanan Sekarang</span>
-            </button>
+            <!-- Dual Quick CTAs (Scan Makanan & Catat Olahraga) -->
+            <div class="grid grid-cols-2 gap-2.5">
+                <button onclick="switchTab('scanner')" class="py-3.5 px-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-[0.99]">
+                    <span>📸 Scan Makanan</span>
+                </button>
+                <button onclick="switchTab('workout')" class="py-3.5 px-3 rounded-2xl bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-400 hover:to-indigo-400 text-white font-extrabold text-xs shadow-lg shadow-purple-500/20 flex items-center justify-center gap-1.5 transition active:scale-[0.99]">
+                    <span>🏋️‍♂️ Catat Olahraga</span>
+                </button>
+            </div>
 
             <!-- Today's Meal Log List -->
             <div class="glass-panel rounded-3xl p-5 space-y-3">
@@ -207,8 +270,20 @@
                         + Input Manual
                     </button>
                 </div>
-
                 <div id="dashboardMealList" class="space-y-2.5"></div>
+            </div>
+
+            <!-- Today's Workout Log List Summary -->
+            <div class="glass-panel rounded-3xl p-5 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                        🔥 Daftar Olahraga (<span id="workoutCountLabel">0</span>)
+                    </h3>
+                    <button onclick="switchTab('workout')" class="text-xs font-semibold text-purple-400 hover:text-purple-300 bg-purple-500/10 px-2.5 py-1 rounded-lg border border-purple-500/20">
+                        + Tambah Latihan
+                    </button>
+                </div>
+                <div id="dashboardWorkoutList" class="space-y-2.5"></div>
             </div>
 
         </section>
@@ -223,7 +298,6 @@
                     <p class="text-xs text-slate-400 mt-0.5">Upload foto makanan + ketik detail isi piring supaya hitungan kalori & protein makin akurat.</p>
                 </div>
 
-                <!-- Photo Picker / Camera Area -->
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Foto Makanan (Kamera / Galeri)</label>
                     <div class="border-2 border-dashed border-slate-700 hover:border-emerald-500/60 rounded-2xl p-4 text-center transition cursor-pointer relative overflow-hidden bg-slate-900/50 group">
@@ -242,7 +316,6 @@
                     </div>
                 </div>
 
-                <!-- Meal Time & Plate Details -->
                 <div class="grid grid-cols-3 gap-2">
                     <div class="col-span-1">
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Waktu</label>
@@ -270,7 +343,6 @@
                     </div>
                 </div>
 
-                <!-- Analyze Button -->
                 <button id="analyzeBtn" onclick="analyzeMealWithAI()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 py-3.5 rounded-2xl font-extrabold text-sm transition flex justify-center items-center gap-2 shadow-lg shadow-emerald-500/20">
                     <span id="analyzeBtnText">🔍 Hitung Kalori & Gizi dengan AI</span>
                     <div id="loadingSpinner" class="spinner hidden"></div>
@@ -328,7 +400,103 @@
             </div>
         </section>
 
-        <!-- ================= TAB 3: RIWAYAT & GRAFIK 7 HARI ================= -->
+        <!-- ================= TAB 3: CATAT OLAHRAGA (WORKOUT LOG) ================= -->
+        <section id="tab-workout" class="hidden space-y-4">
+            <div class="glass-panel rounded-3xl p-5 space-y-4 border border-purple-500/20">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h2 class="text-lg font-extrabold text-white flex items-center gap-2">
+                            🏋️‍♂️ Catat Olahraga & Bonus Bakar
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Kalori olahraga dihitung sebagai bonus pembakaran lemak tanpa mengubah batas kuota makan u.</p>
+                    </div>
+                </div>
+
+                <!-- Tanggal Latihan -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Tanggal Olahraga</label>
+                    <input type="date" id="workoutDateInput" onchange="renderWorkoutTab()" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-purple-500">
+                </div>
+
+                <!-- Pilihan Preset Olahraga -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Pilih Preset Olahraga</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="selectWorkoutPreset('Barbell Curl', 'mins', 4.5)" id="preset-barbell" class="p-3 rounded-2xl border border-purple-500 bg-purple-500/15 text-left transition">
+                            <p class="text-base">💪</p>
+                            <p class="text-xs font-extrabold text-white mt-1">Barbell Curl</p>
+                            <p class="text-[10px] text-slate-400">Latihan beban & lengan</p>
+                        </button>
+                        <button type="button" onclick="selectWorkoutPreset('Push-up & Sit-up', 'mins', 5.5)" id="preset-pushup" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
+                            <p class="text-base">🔥</p>
+                            <p class="text-xs font-extrabold text-white mt-1">Push-up & Sit-up</p>
+                            <p class="text-[10px] text-slate-400">Bodyweight & core</p>
+                        </button>
+                        <button type="button" onclick="selectWorkoutPreset('Jalan Kaki', 'steps', 3.5)" id="preset-walk" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
+                            <p class="text-base">🚶‍♂️</p>
+                            <p class="text-xs font-extrabold text-white mt-1">Jalan Kaki</p>
+                            <p class="text-[10px] text-slate-400">Input langkah / durasi</p>
+                        </button>
+                        <button type="button" onclick="selectWorkoutPreset('Sprint / HIIT', 'mins', 9.5)" id="preset-hiit" class="p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition">
+                            <p class="text-base">🏃⚡</p>
+                            <p class="text-xs font-extrabold text-white mt-1">Sprint / HIIT</p>
+                            <p class="text-[10px] text-slate-400">Kardio intensitas tinggi</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Form Detail Olahraga -->
+                <div class="space-y-3 pt-1">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Latihan (Bisa Diedit)</label>
+                        <input type="text" id="woNameInput" value="Barbell Curl" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-purple-500">
+                    </div>
+
+                    <!-- Mode Input Durasi (Menit) vs Langkah -->
+                    <div id="woDurationBox" class="grid grid-cols-2 gap-2.5">
+                        <div>
+                            <label id="woAmountLabel" class="block text-xs font-semibold text-slate-300 mb-1">Durasi (Menit)</label>
+                            <input type="number" id="woAmountInput" value="20" min="1" oninput="recalcWorkoutBurn()" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Intensitas</label>
+                            <select id="woIntensityInput" onchange="recalcWorkoutBurn()" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-purple-500">
+                                <option value="0.85">🌱 Santai</option>
+                                <option value="1.0" selected>⚡ Sedang / Normal</option>
+                                <option value="1.25">🔥 Intens / Berat</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Estimasi Kalori Terbakar (Otomatis & Bisa Diedit) -->
+                    <div class="bg-slate-900/90 p-3.5 rounded-2xl border border-purple-500/30 flex items-center justify-between">
+                        <div>
+                            <p class="text-[11px] font-bold text-purple-300 uppercase">Estimasi Kalori Keluar</p>
+                            <p class="text-[10px] text-slate-400">Dihitung otomatis dari BB <span id="woUserWeightLabel">70</span> kg (bisa diubah manual)</p>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <input type="number" id="woCaloriesInput" value="110" class="w-20 px-2.5 py-1.5 bg-slate-800 border border-purple-500/40 rounded-xl text-sm font-black text-purple-400 text-right focus:outline-none">
+                            <span class="text-xs font-bold text-slate-400">kkal</span>
+                        </div>
+                    </div>
+
+                    <button onclick="saveWorkoutLog()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-400 hover:to-indigo-400 text-white font-extrabold text-sm shadow-lg shadow-purple-500/25 transition">
+                        ➕ Simpan Olahraga ke Log Harian
+                    </button>
+                </div>
+            </div>
+
+            <!-- Riwayat Olahraga pada Tanggal Terpilih -->
+            <div class="glass-panel rounded-3xl p-5 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-white">📋 Log Olahraga Tanggal Ini</h3>
+                    <span class="text-xs font-extrabold text-purple-400">Total: +<span id="woTabTotalCal">0</span> kkal</span>
+                </div>
+                <div id="workoutTabList" class="space-y-2.5"></div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: RIWAYAT & GRAFIK 7 HARI ================= -->
         <section id="tab-history" class="hidden space-y-4">
             <div class="glass-panel rounded-3xl p-5 space-y-4">
                 <div class="flex items-center justify-between">
@@ -345,11 +513,11 @@
 
                 <div class="grid grid-cols-2 gap-2.5 text-center">
                     <div class="glass-card-light p-3 rounded-2xl">
-                        <p class="text-[11px] text-slate-400">Rata-rata 7 Hari</p>
+                        <p class="text-[11px] text-slate-400">Rata-rata Makan 7 Hari</p>
                         <p class="text-base font-extrabold text-white mt-0.5"><span id="avg7DayCal">0</span> kkal/hari</p>
                     </div>
                     <div class="glass-card-light p-3 rounded-2xl">
-                        <p class="text-[11px] text-slate-400">Total Estimasi Defisit</p>
+                        <p class="text-[11px] text-slate-400">Total Defisit Bersih (7 Hari)</p>
                         <p class="text-base font-extrabold text-emerald-400 mt-0.5"><span id="total7DayDeficit">0</span> kkal</p>
                     </div>
                 </div>
@@ -361,24 +529,35 @@
                     <input type="date" id="historyDatePicker" onchange="onHistoryDateChange(this.value)" class="px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-emerald-500">
                 </div>
 
-                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
-                    <div>
-                        <p id="histDateTitle" class="text-xs font-bold text-slate-300">Hari Ini</p>
-                        <p class="text-lg font-black text-white mt-0.5">
-                            <span id="histTotalCal">0</span> <span class="text-xs font-normal text-slate-400">/ <span id="histTargetCal">1,800</span> kkal</span>
-                        </p>
-                        <p class="text-[11px] text-slate-400 mt-0.5">
-                            Protein: <strong id="histTotalPro" class="text-blue-400">0g</strong> • Karbo: <strong id="histTotalCarb" class="text-amber-400">0g</strong> • Lemak: <strong id="histTotalFat" class="text-rose-400">0g</strong>
-                        </p>
+                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p id="histDateTitle" class="text-xs font-bold text-slate-300">Hari Ini</p>
+                            <p class="text-lg font-black text-white mt-0.5">
+                                Makan: <span id="histTotalCal">0</span> <span class="text-xs font-normal text-slate-400">/ <span id="histTargetCal">1,800</span> kkal</span>
+                            </p>
+                        </div>
+                        <div id="histStatusBadge" class="text-right"></div>
                     </div>
-                    <div id="histStatusBadge" class="text-right"></div>
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+                        <span>P: <strong id="histTotalPro" class="text-blue-400">0g</strong> • K: <strong id="histTotalCarb" class="text-amber-400">0g</strong> • L: <strong id="histTotalFat" class="text-rose-400">0g</strong></span>
+                        <span>Olahraga: <strong id="histTotalWorkout" class="text-purple-400">+0 kkal</strong></span>
+                    </div>
                 </div>
 
-                <div id="historyMealList" class="space-y-2.5"></div>
+                <div class="space-y-2">
+                    <p class="text-xs font-bold text-slate-400 uppercase">🍽️ Log Makanan:</p>
+                    <div id="historyMealList" class="space-y-2.5"></div>
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <p class="text-xs font-bold text-slate-400 uppercase">🏋️‍♂️ Log Olahraga:</p>
+                    <div id="historyWorkoutList" class="space-y-2.5"></div>
+                </div>
             </div>
         </section>
 
-        <!-- ================= TAB 4: KALKULATOR TDEE & DEFISIT ================= -->
+        <!-- ================= TAB 5: KALKULATOR TDEE & DEFISIT ================= -->
         <section id="tab-tdee" class="hidden space-y-4">
             <div class="glass-panel rounded-3xl p-5 space-y-4">
                 <div>
@@ -475,24 +654,28 @@
 
     </main>
 
-    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
-    <nav class="fixed bottom-0 inset-x-0 z-30 glass-panel border-t border-slate-800 px-2 py-2">
-        <div class="max-w-lg mx-auto grid grid-cols-4 gap-1">
+    <!-- ================= BOTTOM NAVIGATION BAR (5 TABS) ================= -->
+    <nav class="fixed bottom-0 inset-x-0 z-30 glass-panel border-t border-slate-800 px-1.5 py-2">
+        <div class="max-w-lg mx-auto grid grid-cols-5 gap-1">
             <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-emerald-400 bg-emerald-500/10 font-bold transition">
-                <span class="text-lg">🏠</span>
-                <span class="text-[11px] mt-0.5">Dashboard</span>
+                <span class="text-base">🏠</span>
+                <span class="text-[10px] mt-0.5">Dashboard</span>
             </button>
             <button onclick="switchTab('scanner')" id="nav-scanner" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-slate-400 hover:text-slate-200 font-medium transition">
-                <span class="text-lg">📸</span>
-                <span class="text-[11px] mt-0.5">Scan AI</span>
+                <span class="text-base">📸</span>
+                <span class="text-[10px] mt-0.5">Scan AI</span>
+            </button>
+            <button onclick="switchTab('workout')" id="nav-workout" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-slate-400 hover:text-slate-200 font-medium transition">
+                <span class="text-base">🏋️‍♂️</span>
+                <span class="text-[10px] mt-0.5">Olahraga</span>
             </button>
             <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-slate-400 hover:text-slate-200 font-medium transition">
-                <span class="text-lg">📅</span>
-                <span class="text-[11px] mt-0.5">Riwayat</span>
+                <span class="text-base">📅</span>
+                <span class="text-[10px] mt-0.5">Riwayat</span>
             </button>
             <button onclick="switchTab('tdee')" id="nav-tdee" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-slate-400 hover:text-slate-200 font-medium transition">
-                <span class="text-lg">🔥</span>
-                <span class="text-[11px] mt-0.5">Target TDEE</span>
+                <span class="text-base">🔥</span>
+                <span class="text-[10px] mt-0.5">Target</span>
             </button>
         </div>
     </nav>
@@ -561,7 +744,8 @@
         const STORAGE_KEYS = {
             PROFILE: 'nutrisnap_profile_v1',
             API_KEY: 'nutrisnap_apikey_v1',
-            MEALS: 'nutrisnap_meals_v1'
+            MEALS: 'nutrisnap_meals_v1',
+            WORKOUTS: 'nutrisnap_workouts_v1'
         };
 
         let userCustomApiKey = "";
@@ -581,12 +765,17 @@
         };
 
         let allMealLogs = [];
+        let allWorkoutLogs = [];
         let selectedDashboardDate = getTodayStr();
         let selectedHistoryDate = getTodayStr();
 
         let currentImageBase64 = null;
         let currentImageMimeType = null;
         let lastScannedResult = null;
+
+        // Workout Preset State
+        let currentWorkoutUnit = 'mins'; // 'mins' or 'steps'
+        let currentWorkoutMet = 4.5;
 
         // --- Load & Save LocalStorage ---
         function loadFromLocalStorage() {
@@ -612,17 +801,22 @@
                 if (savedMeals) {
                     allMealLogs = JSON.parse(savedMeals);
                 }
+
+                const savedWorkouts = localStorage.getItem(STORAGE_KEYS.WORKOUTS);
+                if (savedWorkouts) {
+                    allWorkoutLogs = JSON.parse(savedWorkouts);
+                }
             } catch (e) {
                 console.error("Gagal memuat localStorage:", e);
             }
         }
 
         function saveMealsToLocalStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEYS.MEALS, JSON.stringify(allMealLogs));
-            } catch (e) {
-                console.error("Gagal menyimpan log makanan:", e);
-            }
+            localStorage.setItem(STORAGE_KEYS.MEALS, JSON.stringify(allMealLogs));
+        }
+
+        function saveWorkoutsToLocalStorage() {
+            localStorage.setItem(STORAGE_KEYS.WORKOUTS, JSON.stringify(allWorkoutLogs));
         }
 
         // --- Date Helper Functions ---
@@ -678,7 +872,7 @@
         };
 
         window.switchTab = function(tabName) {
-            const tabs = ['dashboard', 'scanner', 'history', 'tdee'];
+            const tabs = ['dashboard', 'scanner', 'workout', 'history', 'tdee'];
             tabs.forEach(t => {
                 const sec = document.getElementById(`tab-${t}`);
                 const nav = document.getElementById(`nav-${t}`);
@@ -692,6 +886,12 @@
             });
             if (tabName === 'history') renderHistoryTab();
             if (tabName === 'dashboard') renderDashboard();
+            if (tabName === 'workout') {
+                document.getElementById('workoutDateInput').value = selectedDashboardDate;
+                document.getElementById('woUserWeightLabel').textContent = userProfile.weight;
+                recalcWorkoutBurn();
+                renderWorkoutTab();
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
@@ -759,7 +959,129 @@
             showToast(userCustomApiKey ? "API Key berhasil disimpan permanen!" : "API Key dikosongkan.");
         };
 
-        // --- Dashboard Rendering ---
+        // --- Workout Preset & Calculation Logic ---
+        window.selectWorkoutPreset = function(name, unit, metVal) {
+            document.getElementById('woNameInput').value = name;
+            currentWorkoutUnit = unit;
+            currentWorkoutMet = metVal;
+
+            const presets = [
+                { id: 'preset-barbell', name: 'Barbell Curl' },
+                { id: 'preset-pushup', name: 'Push-up & Sit-up' },
+                { id: 'preset-walk', name: 'Jalan Kaki' },
+                { id: 'preset-hiit', name: 'Sprint / HIIT' }
+            ];
+            presets.forEach(p => {
+                const btn = document.getElementById(p.id);
+                if (p.name === name) {
+                    btn.className = "p-3 rounded-2xl border border-purple-500 bg-purple-500/15 text-left transition";
+                } else {
+                    btn.className = "p-3 rounded-2xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 text-left transition";
+                }
+            });
+
+            const amountLabel = document.getElementById('woAmountLabel');
+            const amountInput = document.getElementById('woAmountInput');
+            if (unit === 'steps') {
+                amountLabel.textContent = "Jumlah Langkah Kaki";
+                amountInput.value = 8000;
+                amountInput.step = 500;
+            } else {
+                amountLabel.textContent = "Durasi Latihan (Menit)";
+                amountInput.value = 20;
+                amountInput.step = 5;
+            }
+            recalcWorkoutBurn();
+        };
+
+        window.recalcWorkoutBurn = function() {
+            const amount = parseFloat(document.getElementById('woAmountInput').value) || 0;
+            const intensityMult = parseFloat(document.getElementById('woIntensityInput').value) || 1.0;
+            const weight = userProfile.weight || 70;
+
+            let burned = 0;
+            if (currentWorkoutUnit === 'steps') {
+                // ~0.045 kcal per step scaled to 70kg body weight
+                burned = Math.round(amount * 0.045 * (weight / 70) * intensityMult);
+            } else {
+                // Standard MET formula: (MET * 3.5 * weight_kg / 200) * minutes
+                burned = Math.round(((currentWorkoutMet * 3.5 * weight) / 200) * amount * intensityMult);
+            }
+            document.getElementById('woCaloriesInput').value = Math.max(0, burned);
+        };
+
+        window.saveWorkoutLog = function() {
+            const dateStr = document.getElementById('workoutDateInput').value || getTodayStr();
+            const title = document.getElementById('woNameInput').value.trim() || "Olahraga";
+            const amount = parseFloat(document.getElementById('woAmountInput').value) || 0;
+            const caloriesBurned = parseInt(document.getElementById('woCaloriesInput').value) || 0;
+
+            if (caloriesBurned <= 0) {
+                showToast("Masukkan durasi atau kalori olahraga yang valid!", true);
+                return;
+            }
+
+            const detailStr = currentWorkoutUnit === 'steps'
+                ? `${amount.toLocaleString('id-ID')} langkah`
+                : `${amount} menit`;
+
+            const newWo = {
+                id: 'wo-' + Date.now(),
+                date: dateStr,
+                title,
+                detail: detailStr,
+                caloriesBurned,
+                timestamp: Date.now()
+            };
+
+            allWorkoutLogs.unshift(newWo);
+            saveWorkoutsToLocalStorage();
+            selectedDashboardDate = dateStr;
+            renderWorkoutTab();
+            renderDashboard();
+            showToast(`Mantap! +${caloriesBurned} kkal bonus bakar lemak tersimpan!`);
+        };
+
+        window.deleteWorkoutLog = function(woId) {
+            allWorkoutLogs = allWorkoutLogs.filter(w => w.id !== woId);
+            saveWorkoutsToLocalStorage();
+            renderWorkoutTab();
+            renderDashboard();
+            renderHistoryTab();
+            showToast("Catatan olahraga dihapus.");
+        };
+
+        window.renderWorkoutTab = function() {
+            const dateStr = document.getElementById('workoutDateInput').value || selectedDashboardDate;
+            const dayWorkouts = allWorkoutLogs.filter(w => w.date === dateStr);
+            const totalBurn = dayWorkouts.reduce((acc, w) => acc + (Number(w.caloriesBurned) || 0), 0);
+
+            document.getElementById('woTabTotalCal').textContent = totalBurn.toLocaleString('id-ID');
+            const listEl = document.getElementById('workoutTabList');
+
+            if (dayWorkouts.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">Belum ada olahraga tercatat pada tanggal ini.</p>`;
+            } else {
+                listEl.innerHTML = dayWorkouts.map(w => renderWorkoutCardHTML(w)).join('');
+            }
+        };
+
+        function renderWorkoutCardHTML(w) {
+            return `
+                <div class="bg-slate-900/85 border border-purple-500/20 rounded-2xl p-3.5 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 px-2 py-0.5 rounded-md">🏋️‍♂️ ${w.detail || 'Latihan'}</span>
+                        <h4 class="text-xs font-bold text-white mt-1.5">${w.title}</h4>
+                    </div>
+                    <div class="text-right flex flex-col items-end">
+                        <span class="text-sm font-black text-purple-400">+${w.caloriesBurned} <span class="text-[10px] font-normal text-slate-400">kkal keluar</span></span>
+                        <button onclick="deleteWorkoutLog('${w.id}')" class="text-[11px] text-slate-500 hover:text-rose-400 mt-1.5 transition">🗑️ Hapus</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- Dashboard Rendering & Smart Portion Guide ---
         window.selectQuickDate = function(offset) {
             selectedDashboardDate = getOffsetDateStr(offset);
             const btnToday = document.getElementById('btnToday');
@@ -784,41 +1106,56 @@
             const eatenCarb = dayMeals.reduce((acc, m) => acc + (Number(m.carbs) || 0), 0);
             const eatenFat = dayMeals.reduce((acc, m) => acc + (Number(m.fats) || 0), 0);
 
-            const targetCal = userProfile.targetCalories;
-            const remaining = targetCal - eatenCal;
+            const dayWorkouts = allWorkoutLogs.filter(w => w.date === selectedDashboardDate);
+            const workoutBurnCal = dayWorkouts.reduce((acc, w) => acc + (Number(w.caloriesBurned) || 0), 0);
 
-            const goalBadge = document.getElementById('goalBadge');
-            if (userProfile.deficitGoal < 0) {
-                goalBadge.textContent = `🔥 Target Defisit (${userProfile.deficitGoal} kkal dari TDEE)`;
-            } else if (userProfile.deficitGoal === 0) {
-                goalBadge.textContent = `⚖️ Target Maintenance (TDEE)`;
-            } else {
-                goalBadge.textContent = `💪 Target Surplus (+${userProfile.deficitGoal} kkal)`;
-            }
+            // LOCKED FOOD QUOTA: Workout does NOT increase food target
+            const targetCal = userProfile.targetCalories;
+            const remainingFoodQuota = targetCal - eatenCal;
+
+            // Total Energy Out = TDEE + Workout Bonus
+            const totalEnergyOut = userProfile.tdee + workoutBurnCal;
+            const netDeficit = totalEnergyOut - eatenCal; // Positive = Deficit, Negative = Surplus
 
             const remEl = document.getElementById('dashRemainingCal');
             const remLabel = document.getElementById('dashRemainingLabel');
-            if (remaining >= 0) {
-                remEl.textContent = remaining.toLocaleString('id-ID');
+            if (remainingFoodQuota >= 0) {
+                remEl.textContent = remainingFoodQuota.toLocaleString('id-ID');
                 remEl.className = "text-emerald-400";
                 remLabel.textContent = "kkal kuota makan tersisa";
             } else {
-                remEl.textContent = `+${Math.abs(remaining).toLocaleString('id-ID')}`;
+                remEl.textContent = `+${Math.abs(remainingFoodQuota).toLocaleString('id-ID')}`;
                 remEl.className = "text-rose-400";
-                remLabel.textContent = "kkal melebihi target harian";
+                remLabel.textContent = "kkal lewat batas makan";
             }
 
             document.getElementById('dashEatenCal').textContent = eatenCal.toLocaleString('id-ID');
             document.getElementById('dashTargetCal').textContent = targetCal.toLocaleString('id-ID');
             document.getElementById('dashTdeeCal').textContent = userProfile.tdee.toLocaleString('id-ID');
+            document.getElementById('dashWorkoutCal').textContent = workoutBurnCal.toLocaleString('id-ID');
+            document.getElementById('dashTotalBurnCal').textContent = totalEnergyOut.toLocaleString('id-ID');
+
+            // Net Balance Badge
+            const netBadge = document.getElementById('netBalanceBadge');
+            if (eatenCal === 0 && workoutBurnCal === 0) {
+                netBadge.textContent = `Target Defisit ${Math.abs(userProfile.deficitGoal)} kkal`;
+                netBadge.className = "text-xs font-extrabold text-slate-400";
+            } else if (netDeficit >= 0) {
+                netBadge.textContent = `🔥 Net Defisit -${netDeficit.toLocaleString('id-ID')} kkal`;
+                netBadge.className = "text-xs font-extrabold text-emerald-400";
+            } else {
+                netBadge.textContent = `⚠️ Surplus +${Math.abs(netDeficit).toLocaleString('id-ID')} kkal`;
+                netBadge.className = "text-xs font-extrabold text-rose-400";
+            }
 
             const pctCal = Math.min(100, Math.round((eatenCal / targetCal) * 100));
             const calBar = document.getElementById('calProgressBar');
             calBar.style.width = `${pctCal}%`;
-            calBar.className = remaining >= 0
+            calBar.className = remainingFoodQuota >= 0
                 ? "h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500"
                 : "h-full bg-gradient-to-r from-amber-500 to-rose-500 rounded-full transition-all duration-500";
 
+            // Macros
             document.getElementById('dashProCur').textContent = Math.round(eatenPro);
             document.getElementById('dashProTarget').textContent = userProfile.targetProtein;
             document.getElementById('proBar').style.width = `${Math.min(100, (eatenPro / userProfile.targetProtein) * 100)}%`;
@@ -831,52 +1168,211 @@
             document.getElementById('dashFatTarget').textContent = userProfile.targetFats;
             document.getElementById('fatBar').style.width = `${Math.min(100, (eatenFat / userProfile.targetFats) * 100)}%`;
 
+            // Render Visual Portion Guide for Remaining Quota
+            renderVisualPortionGuide(remainingFoodQuota, Math.max(0, userProfile.targetProtein - eatenPro));
+
+            // Advisor Card Logic
             const advisorCard = document.getElementById('deficitAdvisorCard');
             const advisorIcon = document.getElementById('advisorIcon');
             const advisorTitle = document.getElementById('advisorTitle');
             const advisorDesc = document.getElementById('advisorDesc');
             const surplusBox = document.getElementById('surplusBurnBox');
 
-            if (eatenCal === 0) {
-                advisorCard.className = "glass-panel rounded-3xl p-4 border-l-4 border-l-emerald-500 space-y-2";
-                advisorIcon.textContent = "💡";
-                advisorTitle.textContent = "Tips: Gak perlu bakar semua kalori makanan!";
-                advisorDesc.innerHTML = `Tubuh otomatis membakar <strong class="text-emerald-400">${userProfile.tdee.toLocaleString('id-ID')} kkal/hari</strong> (BMR ${userProfile.bmr} + gerak harian). Cukup makan di bawah <strong class="text-white">${targetCal.toLocaleString('id-ID')} kkal</strong> hari ini dan tubuh otomatis membakar lemak!`;
-                surplusBox.classList.add('hidden');
-            } else if (eatenCal <= targetCal) {
-                const netDeficitToday = userProfile.tdee - eatenCal;
+            if (eatenCal <= targetCal) {
                 advisorCard.className = "glass-panel rounded-3xl p-4 border-l-4 border-l-emerald-500 space-y-2";
                 advisorIcon.textContent = "✅";
-                advisorTitle.textContent = "Status: On Track Defisit Kalori!";
-                advisorDesc.innerHTML = `Mantap Bro! Kalori masuk (${eatenCal} kkal) masih di bawah target makan (${targetCal} kkal). Karena tubuh u otomatis membakar <strong>${userProfile.tdee} kkal</strong> hari ini, u sedang mengalami defisit bersih sebesar <strong class="text-emerald-400">${netDeficitToday.toLocaleString('id-ID')} kkal</strong> tanpa perlu olahraga tambahan!`;
+                advisorTitle.textContent = workoutBurnCal > 0
+                    ? `Mantap! Defisit Makan + Bonus Olahraga (+${workoutBurnCal} kkal)`
+                    : "Status: Jalur Defisit Kalori Aman!";
+                advisorDesc.innerHTML = `Total keluar hari ini <strong class="text-emerald-400">${totalEnergyOut.toLocaleString('id-ID')} kkal</strong> (TDEE ${userProfile.tdee} + Olahraga ${workoutBurnCal}), sedangkan makan masuk <strong class="text-white">${eatenCal.toLocaleString('id-ID')} kkal</strong>. Saat ini tubuh u defisit bersih <strong class="text-emerald-400">${netDeficit.toLocaleString('id-ID')} kkal</strong>!`;
                 surplusBox.classList.add('hidden');
             } else {
-                const surplusFromTarget = eatenCal - targetCal;
-                advisorCard.className = "glass-panel rounded-3xl p-4 border-l-4 border-l-amber-500 space-y-2";
-                advisorIcon.textContent = "⚡";
-                advisorTitle.textContent = `Lewat Target ${surplusFromTarget} kkal (Jangan Panik!)`;
-                advisorDesc.innerHTML = `Lu <strong>tidak perlu</strong> membakar seluruh ${eatenCal} kkal yang u makan! Tubuh u sudah membakar ${userProfile.tdee} kkal secara alami. Untuk kembali ke jalur target defisit, u cukup membakar kelebihannya saja yaitu <strong class="text-amber-400">${surplusFromTarget} kkal</strong>:`;
-                surplusBox.classList.remove('hidden');
+                const overTargetAfterWorkout = eatenCal - (targetCal + workoutBurnCal);
+                if (overTargetAfterWorkout <= 0) {
+                    advisorCard.className = "glass-panel rounded-3xl p-4 border-l-4 border-l-purple-500 space-y-2";
+                    advisorIcon.textContent = "🛡️";
+                    advisorTitle.textContent = "Diselamatkan oleh Bonus Olahraga!";
+                    advisorDesc.innerHTML = `Makan u lewat batas kuota (${eatenCal} kkal), tapi berkat olahraga <strong class="text-purple-400">+${workoutBurnCal} kkal</strong>, total pembakaran u naik jadi ${totalEnergyOut} kkal. U masih <strong>Defisit Bersih ${netDeficit} kkal</strong> hari ini!`;
+                    surplusBox.classList.add('hidden');
+                } else {
+                    advisorCard.className = "glass-panel rounded-3xl p-4 border-l-4 border-l-amber-500 space-y-2";
+                    advisorIcon.textContent = "⚡";
+                    advisorTitle.textContent = `Masih Lewat Target ${overTargetAfterWorkout} kkal`;
+                    advisorDesc.innerHTML = `Untuk kembali ke target defisit harian, u cukup membakar sisa kelebihan <strong class="text-amber-400">${overTargetAfterWorkout} kkal</strong> ini saja dengan salah satu latihan berikut:`;
+                    surplusBox.classList.remove('hidden');
 
-                document.getElementById('surplusKcalText').textContent = surplusFromTarget;
-                document.getElementById('burnWalkSteps').textContent = (Math.round(surplusFromTarget / 0.045)).toLocaleString('id-ID');
-                document.getElementById('burnHiitMins').textContent = `${Math.max(3, Math.round(surplusFromTarget / 11))} mnt`;
-                document.getElementById('burnLiftMins').textContent = `${Math.max(5, Math.round(surplusFromTarget / 6.5))} mnt`;
+                    document.getElementById('surplusKcalText').textContent = overTargetAfterWorkout;
+                    document.getElementById('burnWalkSteps').textContent = (Math.round(overTargetAfterWorkout / 0.045)).toLocaleString('id-ID');
+                    document.getElementById('burnHiitMins').textContent = `${Math.max(3, Math.round(overTargetAfterWorkout / 11))} mnt`;
+                    document.getElementById('burnLiftMins').textContent = `${Math.max(5, Math.round(overTargetAfterWorkout / 6.5))} mnt`;
+                }
             }
 
+            // Render Meals List
             document.getElementById('mealCountLabel').textContent = dayMeals.length;
             const listEl = document.getElementById('dashboardMealList');
             if (dayMeals.length === 0) {
-                listEl.innerHTML = `
-                    <div class="text-center py-6 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800">
-                        <p class="text-2xl mb-1">🍽️</p>
-                        <p class="text-xs text-slate-400">Belum ada makanan tercatat pada tanggal ini.</p>
-                    </div>
-                `;
+                listEl.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800">Belum ada makanan tercatat hari ini.</p>`;
             } else {
                 listEl.innerHTML = dayMeals.map(meal => renderMealCardHTML(meal)).join('');
             }
+
+            // Render Workouts List on Dashboard
+            document.getElementById('workoutCountLabel').textContent = dayWorkouts.length;
+            const woListEl = document.getElementById('dashboardWorkoutList');
+            if (dayWorkouts.length === 0) {
+                woListEl.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800">Belum ada olahraga tercatat hari ini.</p>`;
+            } else {
+                woListEl.innerHTML = dayWorkouts.map(w => renderWorkoutCardHTML(w)).join('');
+            }
         }
+
+        // --- Visual Portion Translator Function ---
+        function renderVisualPortionGuide(remCal, remPro) {
+            const badge = document.getElementById('portionGuideCalBadge');
+            const list = document.getElementById('instantPortionList');
+            const askBtn = document.getElementById('askAiPortionBtn');
+
+            if (remCal <= 50) {
+                badge.textContent = "Kuota Habis";
+                badge.className = "text-xs font-black bg-rose-500/20 text-rose-300 px-2.5 py-1 rounded-xl border border-rose-500/30";
+                list.innerHTML = `
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-slate-300">
+                        🔒 Kuota makan harian u sudah terpenuhi! Kalau masih lapar, pilih air putih, teh tawar hangat, atau timun/sayur rebus.
+                    </div>
+                `;
+                askBtn.classList.add('hidden');
+                return;
+            }
+
+            askBtn.classList.remove('hidden');
+            badge.textContent = `Sisa ${remCal} kkal`;
+            badge.className = "text-xs font-black bg-teal-500/20 text-teal-300 px-2.5 py-1 rounded-xl border border-teal-500/30";
+
+            // Dynamic math for realistic Indonesian portions:
+            // 1 centong nasi putih (~100g) = 130 kcal
+            // 1 potong dada ayam tanpa kulit (~100g matang) = 165 kcal, 31g protein
+            // 1 butir telur rebus = 75 kcal, 6g protein
+            // 1 mangkuk sayur bening/tumis = 45 kcal
+
+            let optionsHTML = '';
+            if (remCal < 250) {
+                const eggs = Math.max(1, Math.round(remCal / 75));
+                const chickenGrams = Math.max(50, Math.round((remCal / 165) * 100));
+                optionsHTML = `
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <span>🥚 <strong>Opsi Protein Ringan:</strong> ${eggs} butir telur rebus</span>
+                        <span class="text-teal-400 font-bold">~${eggs * 75} kkal</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <span>🍗 <strong>Opsi Kenyang Otot:</strong> ~${chickenGrams}g dada ayam bakar/rebus</span>
+                        <span class="text-teal-400 font-bold">~${remCal} kkal</span>
+                    </div>
+                `;
+            } else {
+                // Allocate ~40% to rice, ~45% to chicken/egg, ~15% to veggies
+                const riceCentong = Math.max(0.5, Math.round(((remCal * 0.4) / 130) * 2) / 2);
+                const riceCal = Math.round(riceCentong * 130);
+                const leftForLauk = Math.max(80, remCal - riceCal - 40);
+                const chickenPortion = Math.max(0.5, Math.round((leftForLauk / 165) * 2) / 2);
+
+                const eggsOnly = Math.max(1, Math.floor((remCal - 130) / 75));
+
+                optionsHTML = `
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <span>🍛 <strong>Opsi 1 (Nasi + Ayam):</strong> ${riceCentong} centong nasi + ${chickenPortion} potong dada ayam + sayur</span>
+                        <span class="text-teal-400 font-bold">~${remCal} kkal</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <span>🍳 <strong>Opsi 2 (Nasi + Telur):</strong> 1 centong nasi + ${eggsOnly} butir telur rebus/dadar tipis</span>
+                        <span class="text-teal-400 font-bold">~${130 + (eggsOnly * 75)} kkal</span>
+                    </div>
+                `;
+            }
+            list.innerHTML = optionsHTML;
+        }
+
+        // --- Ask AI for Custom Remaining Quota Menu ---
+        window.askAiForRemainingPortion = async function() {
+            if (!userCustomApiKey) {
+                openModal('apiModal');
+                showToast("Masukkan Gemini API Key dulu di menu kunci 🔑!", true);
+                return;
+            }
+
+            const dayMeals = allMealLogs.filter(m => m.date === selectedDashboardDate);
+            const eatenCal = dayMeals.reduce((acc, m) => acc + (Number(m.calories) || 0), 0);
+            const eatenPro = dayMeals.reduce((acc, m) => acc + (Number(m.protein) || 0), 0);
+            const remCal = Math.max(0, userProfile.targetCalories - eatenCal);
+            const remPro = Math.max(0, userProfile.targetProtein - eatenPro);
+
+            const btn = document.getElementById('askAiPortionBtn');
+            const btnText = document.getElementById('askAiPortionBtnText');
+            const spinner = document.getElementById('aiPortionSpinner');
+            const resBox = document.getElementById('aiPortionResultBox');
+            const resList = document.getElementById('aiPortionResultList');
+
+            btn.disabled = true;
+            btnText.textContent = "AI sedang meracik takaran porsi...";
+            spinner.classList.remove('hidden');
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${userCustomApiKey}`;
+                const promptText = `Pengguna sedang defisit kalori dan memiliki sisa kuota makan hari ini sebesar ${remCal} kkal dan butuh tambahan sekitar ${remPro} gram protein.
+Berikan 3 opsi kombinasi menu makanan Indonesia yang gampang didapat (seperti nasi putih, dada ayam, telur, tempe, tahu, sayur, pisang, roti, atau susu protein) yang total kalorinya PAS sekitar ${remCal} kkal. Gunakan takaran rumah tangga yang jelas (misal: berapa centong nasi, berapa potong dada ayam, berapa butir telur).`;
+
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: promptText }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                "options": {
+                                    "type": "ARRAY",
+                                    "items": {
+                                        "type": "OBJECT",
+                                        "properties": {
+                                            "title": { "type": "STRING" },
+                                            "MenuDetail": { "type": "STRING" },
+                                            "calories": { "type": "NUMBER" },
+                                            "protein": { "type": "NUMBER" }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error("Gagal menghubungi Gemini API.");
+                const result = await response.json();
+                const parsed = JSON.parse(result.candidates[0].content.parts[0].text);
+
+                resList.innerHTML = (parsed.options || []).map(opt => `
+                    <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
+                        <div class="flex justify-between font-bold text-white">
+                            <span>🍽️ ${opt.title}</span>
+                            <span class="text-teal-400">${opt.calories} kkal • ${opt.protein}g P</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mt-1">${opt.MenuDetail}</p>
+                    </div>
+                `).join('');
+                resBox.classList.remove('hidden');
+            } catch (e) {
+                showToast(e.message, true);
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = "✨ Minta AI Susunkan Menu Pas Sisa Kalori Ini";
+                spinner.classList.add('hidden');
+            }
+        };
 
         function renderMealCardHTML(meal) {
             const itemsBadges = (meal.items && meal.items.length > 0)
@@ -955,7 +1451,7 @@
             reader.readAsDataURL(file);
         });
 
-        // --- Call Gemini API ---
+        // --- Call Gemini API for Food Scanner ---
         window.analyzeMealWithAI = async function() {
             const description = document.getElementById('descriptionInput').value.trim();
             if (!currentImageBase64 && !description) {
@@ -1180,29 +1676,37 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
             const totalCarb = dayMeals.reduce((acc, m) => acc + (Number(m.carbs) || 0), 0);
             const totalFat = dayMeals.reduce((acc, m) => acc + (Number(m.fats) || 0), 0);
 
+            const dayWorkouts = allWorkoutLogs.filter(w => w.date === selectedHistoryDate);
+            const totalWoCal = dayWorkouts.reduce((acc, w) => acc + (Number(w.caloriesBurned) || 0), 0);
+
             document.getElementById('histTotalCal').textContent = totalCal.toLocaleString('id-ID');
             document.getElementById('histTargetCal').textContent = userProfile.targetCalories.toLocaleString('id-ID');
             document.getElementById('histTotalPro').textContent = `${Math.round(totalPro)}g`;
             document.getElementById('histTotalCarb').textContent = `${Math.round(totalCarb)}g`;
             document.getElementById('histTotalFat').textContent = `${Math.round(totalFat)}g`;
+            document.getElementById('histTotalWorkout').textContent = `+${totalWoCal.toLocaleString('id-ID')} kkal`;
+
+            const totalOut = userProfile.tdee + totalWoCal;
+            const netDef = totalOut - totalCal;
 
             const statusBadge = document.getElementById('histStatusBadge');
-            if (totalCal === 0) {
+            if (totalCal === 0 && totalWoCal === 0) {
                 statusBadge.innerHTML = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-slate-800 text-slate-400">Kosong</span>`;
-            } else if (totalCal <= userProfile.targetCalories) {
-                const def = userProfile.tdee - totalCal;
-                statusBadge.innerHTML = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">✅ Defisit ${def} kkal</span>`;
+            } else if (netDef >= 0) {
+                statusBadge.innerHTML = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">🔥 Net Defisit -${netDef} kkal</span>`;
             } else {
-                const over = totalCal - userProfile.targetCalories;
-                statusBadge.innerHTML = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">⚠️ +${over} kkal</span>`;
+                statusBadge.innerHTML = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">⚠️ Surplus +${Math.abs(netDef)} kkal</span>`;
             }
 
             const histList = document.getElementById('historyMealList');
-            if (dayMeals.length === 0) {
-                histList.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">Tidak ada catatan makanan pada tanggal ini.</p>`;
-            } else {
-                histList.innerHTML = dayMeals.map(m => renderMealCardHTML(m)).join('');
-            }
+            histList.innerHTML = dayMeals.length === 0
+                ? `<p class="text-xs text-slate-500 text-center py-3">Tidak ada catatan makanan.</p>`
+                : dayMeals.map(m => renderMealCardHTML(m)).join('');
+
+            const histWoList = document.getElementById('historyWorkoutList');
+            histWoList.innerHTML = dayWorkouts.length === 0
+                ? `<p class="text-xs text-slate-500 text-center py-3">Tidak ada catatan olahraga.</p>`
+                : dayWorkouts.map(w => renderWorkoutCardHTML(w)).join('');
 
             const chartEl = document.getElementById('weeklyChartContainer');
             const days7 = [];
@@ -1217,14 +1721,19 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
 
             chartEl.innerHTML = days7.map(dStr => {
                 const dMeals = allMealLogs.filter(m => m.date === dStr);
+                const dWorkouts = allWorkoutLogs.filter(w => w.date === dStr);
                 const cals = dMeals.reduce((a, b) => a + (Number(b.calories) || 0), 0);
-                if (cals > 0) {
-                    sumCal7 += cals;
-                    activeDaysCount++;
-                    totalNetDeficit7 += (userProfile.tdee - cals);
+                const woBurn = dWorkouts.reduce((a, b) => a + (Number(b.caloriesBurned) || 0), 0);
+
+                if (cals > 0 || woBurn > 0) {
+                    if (cals > 0) {
+                        sumCal7 += cals;
+                        activeDaysCount++;
+                    }
+                    totalNetDeficit7 += ((userProfile.tdee + woBurn) - cals);
                 }
                 const heightPct = cals === 0 ? 6 : Math.min(100, Math.max(12, Math.round((cals / maxCalScale) * 100)));
-                const isOver = cals > userProfile.targetCalories;
+                const isOver = cals > (userProfile.targetCalories + woBurn);
                 const barColor = cals === 0
                     ? 'bg-slate-800'
                     : (isOver ? 'bg-gradient-to-t from-rose-600 to-amber-500' : 'bg-gradient-to-t from-emerald-600 to-teal-400');
@@ -1250,10 +1759,13 @@ Hitung total kalori (kkal), protein (g), karbohidrat (g), dan lemak (g) untuk sa
 
         // --- App Bootstrapping ---
         window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('scanDateInput').value = getTodayStr();
-            document.getElementById('historyDatePicker').value = getTodayStr();
+            const today = getTodayStr();
+            document.getElementById('scanDateInput').value = today;
+            document.getElementById('workoutDateInput').value = today;
+            document.getElementById('historyDatePicker').value = today;
             loadFromLocalStorage();
             updateTdeeLivePreview();
+            recalcWorkoutBurn();
             renderDashboard();
         });
     </script>
