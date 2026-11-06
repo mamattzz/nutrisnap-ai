@@ -1317,7 +1317,7 @@
             spinner.classList.remove('hidden');
 
             try {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${userCustomApiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${userCustomApiKey}`;
                 const promptText = `Pengguna sedang defisit kalori dan memiliki sisa kuota makan hari ini sebesar ${remCal} kkal dan butuh tambahan sekitar ${remPro} gram protein.
 Berikan 3 opsi kombinasi menu makanan Indonesia yang gampang didapat (seperti nasi putih, dada ayam, telur, tempe, tahu, sayur, pisang, roti, atau susu protein) yang total kalorinya PAS sekitar ${remCal} kkal. Gunakan takaran rumah tangga yang jelas (misal: berapa centong nasi, berapa potong dada ayam, berapa butir telur).`;
 
@@ -1476,7 +1476,7 @@ Berikan 3 opsi kombinasi menu makanan Indonesia yang gampang didapat (seperti na
             resultCard.classList.add('hidden');
 
             try {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${userCustomApiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${userCustomApiKey}`;
 
                 const promptText = `Kamu adalah ahli gizi olahraga & diet Indonesia. Analisis makanan ini secara akurat.
 Deskripsi tambahan isi piring dari pengguna: "${description || 'Lihat langsung dari foto makanan'}".
